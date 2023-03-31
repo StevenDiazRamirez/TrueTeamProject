@@ -1,5 +1,3 @@
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +7,8 @@ public class MainPage {
     BlankPage blankPage = new BlankPage();
     ReportPage reportPage = new ReportPage();
     CustomerPage customerPage = new CustomerPage();
+    SalePage salePage = new SalePage();
+    RefundPage refundPage = new RefundPage();
 
     private JPanel mainPanel;
     private JButton manageReportsButton;
@@ -45,12 +45,15 @@ public class MainPage {
         createSaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                frame.remove(mainPanel);
+                frame.add(salePage.getSalePanel());
+                frame.validate();
             }
         });
         backupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("backup Complete!");
 
             }
         });
@@ -73,13 +76,16 @@ public class MainPage {
         refundButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                frame.remove(mainPanel);
+                frame.add(refundPage.getRefundPanel());
+                frame.validate();
 
             }
         });
         restoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                System.out.println("Restoring latest backup..");
             }
         });
     }
