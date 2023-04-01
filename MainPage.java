@@ -1,14 +1,9 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainPage {
-
-    BlankPage blankPage = new BlankPage();
-    ReportPage reportPage = new ReportPage();
-    CustomerPage customerPage = new CustomerPage();
-    SalePage salePage = new SalePage();
-    RefundPage refundPage = new RefundPage();
+public class MainPage extends JFrame {
 
     private JPanel mainPanel;
     private JButton manageReportsButton;
@@ -19,21 +14,28 @@ public class MainPage {
     private JButton manageBlanksButton;
     private JButton refundButton;
     private JButton restoreButton;
+    private JFrame mainFrame;
 
-    public MainPage() {}
+    public MainPage() {
+        createMainPage();
+    }
 
     public void createMainPage() {
-        JFrame frame = new JFrame("Innovotype");
-        frame.setSize(500,500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.add(mainPanel);
+
+        mainFrame = new JFrame("Innovotype");
+        mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        mainFrame.setPreferredSize(new Dimension(500,500));
+
+        mainFrame.add(mainPanel);
+        mainFrame.pack();
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
         manageReportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainPanel);
-                frame.add(reportPage.getReportPanel());
-                frame.validate();
+                ReportPage reportPage = new ReportPage();
+                reportPage.setVisible(true);
+                mainFrame.dispose();
             }
         });
         manageCommissionRateButton.addActionListener(new ActionListener() {
@@ -45,9 +47,7 @@ public class MainPage {
         createSaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainPanel);
-                frame.add(salePage.getSalePanel());
-                frame.validate();
+
             }
         });
         backupButton.addActionListener(new ActionListener() {
@@ -60,25 +60,19 @@ public class MainPage {
         manageBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainPanel);
-                frame.add(blankPage.getBlankPanel());
-                frame.validate();
+
             }
         });
         manageCustomerAccountsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainPanel);
-                frame.add(customerPage.getCustomerPanel());
-                frame.validate();
+
             }
         });
         refundButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainPanel);
-                frame.add(refundPage.getRefundPanel());
-                frame.validate();
+
 
             }
         });
@@ -88,14 +82,5 @@ public class MainPage {
                 System.out.println("Restoring latest backup..");
             }
         });
-    }
-
-    public JPanel getMainPanel() {
-        return mainPanel;
-    }
-
-    public static void main(String[] args) {
-        MainPage mp = new MainPage();
-        mp.createMainPage();
     }
 }
