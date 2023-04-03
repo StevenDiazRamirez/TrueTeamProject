@@ -30,9 +30,11 @@ public class LoginPage extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //check if details match goes here
                 MainPage mainPage = new MainPage();
-                mainPage.setVisible(true);
+                mainPage.setVisible(false);
                 frame.dispose();
+
             }
         });
 
@@ -55,7 +57,7 @@ public class LoginPage extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginPage().setVisible(true);
+                new LoginPage();
             }
         });
     }

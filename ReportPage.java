@@ -10,6 +10,7 @@ public class ReportPage extends JFrame {
     private JButton interlineReportButton;
     private JButton individualDomesticReportButton;
     private JButton domesticReportButton;
+    private JButton backButton;
     private JFrame reportFrame;
 
     public ReportPage() {
@@ -55,6 +56,14 @@ public class ReportPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainPage mainPage = new MainPage();
+                mainPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
     }
