@@ -9,14 +9,14 @@ public class Employee {
         private int EmployeeID;
         private String firstName;
         private String lastName;
-        private String email;
+        private String username;
         private String role;
         private String password;
 
-        public Employee(String firstName, String lastName, String email, String password, String role) {
+        public Employee(String firstName, String lastName, String username, String password, String role) {
             this.firstName = firstName;
             this.lastName = lastName;
-            this.email = email;
+            this.username = username;
             this.password = password;
             this.role = role;
         }
@@ -39,6 +39,29 @@ public class Employee {
             }
             //AlertWindow.showInformationAlert("Wrong details","Please make sure that the ID and the password are both correct!");
             return false;
+        }
+
+        public static Employee loggedInProfile(String username, String password) {
+            try {
+                Connection con = DBSConnection.getConnection();
+
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery("SELECT * FROM EmployeeAccount WHERE employeePassword = " + '"' + password + '"' + "AND Username = " + '"' + username + '"');
+                while (rs.next()) {
+                    Employee employee = new Employee(rs.getString("First Name"),
+                            rs.getString("Last Name"),
+                            rs.getString("Username"),
+                            rs.getString("employeePassword"),
+                            rs.getString("AccountType"));
+                    employee.setEmployeeID(rs.getInt("EmployeeID"));
+                    return employee;
+                }
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         public String getPassword() {
@@ -73,12 +96,12 @@ public class Employee {
             this.lastName = lastname;
         }
 
-        public String getEmail() {
-            return email;
+        public String getUsername() {
+            return username;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setUsername(String username) {
+            this.username = username;
         }
 
         public String getRole() {

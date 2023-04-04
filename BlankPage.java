@@ -30,19 +30,25 @@ public class BlankPage extends JFrame {
         viewBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ViewBlanksPage viewBlanksPage = new ViewBlanksPage();
+                viewBlanksPage.setVisible(false);
+                blankFrame.dispose();
             }
         });
         orderBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                OrderBlanksPage orderBlanksPage = new OrderBlanksPage();
+                orderBlanksPage.setVisible(false);
+                blankFrame.dispose();
             }
         });
         allocateReallocateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                AllocateBlanksPage allocateBlanksPage = new AllocateBlanksPage();
+                allocateBlanksPage.setVisible(false);
+                blankFrame.dispose();
             }
         });
         reportBlanksButton.addActionListener(new ActionListener() {

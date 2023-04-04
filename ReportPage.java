@@ -31,31 +31,41 @@ public class ReportPage extends JFrame {
         stockTurnoverReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                StockTurnoverReportPage stockTurnoverReportPage = new StockTurnoverReportPage();
+                stockTurnoverReportPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
         individualInterlineReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                IndividualInterlineReportPage individualInterlineReportPage = new IndividualInterlineReportPage();
+                individualInterlineReportPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
         interlineReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                InterlineReportPage interlineReportPage = new InterlineReportPage();
+                interlineReportPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
         individualDomesticReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                IndividualDomesticReportPage individualDomesticReportPage = new IndividualDomesticReportPage();
+                individualDomesticReportPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
         domesticReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                DomesticReportPage domesticReportPage = new DomesticReportPage();
+                domesticReportPage.setVisible(false);
+                reportFrame.dispose();
             }
         });
         backButton.addActionListener(new ActionListener() {

@@ -42,6 +42,8 @@ public class MainPage extends JFrame {
         manageCommissionRateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CommissionPage commissionPage = new CommissionPage();
+                commissionPage.setVisible(false);
                 mainFrame.dispose();
             }
         });

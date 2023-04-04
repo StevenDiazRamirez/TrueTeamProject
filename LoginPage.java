@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class LoginPage extends JFrame {
     private JTextField usernameTextField;
@@ -31,6 +35,7 @@ public class LoginPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Employee.login(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()))) {
+                    Employee.loggedInProfile(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()));
                     MainPage mainPage = new MainPage();
                     mainPage.setVisible(false);
                     frame.dispose();
