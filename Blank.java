@@ -1,21 +1,26 @@
 import java.util.Date;
 
 public class Blank {
-    class blanks{
-        int blankID;
-        String status;
-        int employeeID;
-        int blankType;
-        Date recieveDate;
-        Date assignedDate;
 
-        public blanks(int blankID, String status, int employeeID, int blankType, Date recieveDate, Date assignedDate) {
-            this.blankID = blankID;
+        private int blankID;
+        private String status;
+        private int employeeID;
+        private int blankType;
+        private Date receiveDate;
+        private Date assignedDate;
+
+        public Blank(int blankType, String status, Date receiveDate) {
             this.status = status;
-            this.employeeID = employeeID;
             this.blankType = blankType;
-            this.recieveDate = recieveDate;
-            this.assignedDate = assignedDate;
+            this.receiveDate = receiveDate;
+        }
+
+        public Blank(int blankType, String status, Date receiveDate, Date assignedDate, int employeeID) {
+        this.status = status;
+        this.blankType = blankType;
+        this.receiveDate = receiveDate;
+        this.assignedDate = assignedDate;
+        this.employeeID = employeeID;
         }
 
         public int getBlankID() {
@@ -50,12 +55,12 @@ public class Blank {
             this.blankType = blankType;
         }
 
-        public Date getRecieveDate() {
-            return recieveDate;
+        public Date getReceiveDate() {
+            return receiveDate;
         }
 
-        public void setRecieveDate(Date recieveDate) {
-            this.recieveDate = recieveDate;
+        public void setReceiveDate(Date receiveDate) {
+            this.receiveDate = receiveDate;
         }
 
         public Date getAssignedDate() {
@@ -67,51 +72,4 @@ public class Blank {
         }
 
     }
-    class coupon{
-        int couponID;
-        String couponType;
-        String destTo;
-        String destFrom;
 
-        public coupon(int couponID, String couponType, String destTo, String destFrom) {
-            this.couponID = couponID;
-            this.couponType = couponType;
-            this.destTo = destTo;
-            this.destFrom = destFrom;
-        }
-
-        public int getCouponID() {
-            return couponID;
-        }
-
-        public void setCouponID(int couponID) {
-            this.couponID = couponID;
-        }
-
-        public String getCouponType() {
-            return couponType;
-        }
-
-        public void setCouponType(String couponType) {
-            this.couponType = couponType;
-        }
-
-        public String getDestTo() {
-            return destTo;
-        }
-
-        public void setDestTo(String destTo) {
-            this.destTo = destTo;
-        }
-
-        public String getDestFrom() {
-            return destFrom;
-        }
-
-        public void setDestFrom(String destFrom) {
-            this.destFrom = destFrom;
-        }
-    }
-
-
-}
