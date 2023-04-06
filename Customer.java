@@ -1,6 +1,12 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Customer {
+
+    private static Connection con = DBSConnection.getConnection();
 
     private int customerID;
     private String firstName;
@@ -22,6 +28,75 @@ public class Customer {
         this.type = type;
         this.email = email;
         this.discountID = discountID;
+    }
+
+    public static void addCustomerAccount(Customer customer) {
+        try {
+            String query = "INSERT INTO customeraccount (`CustomerID`,`FirstName`, `LastName`, `AccountType`, `CustomerEmail`) VALUES " +
+                    "('" + customer.getCustomerID() + "', '" + customer.getFirstName() + "', '" + customer.getLastName()
+                    + "', '" + customer.getType() + "', '" + customer.getEmail() + "')";
+
+            PreparedStatement stm = con.prepareStatement(query);
+            stm.executeUpdate();
+            System.out.println("Added!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateCustomerAccount(Customer customer) {
+        try {
+            String query = "UPDATE customeraccount SET AccountType = " + "'" + customer.getType() + "'" + " WHERE FirstName = " +
+                    "'" + customer.getFirstName() + "'" + "AND LastName = " + "'" + customer.getLastName() + "'" + "AND CustomerEmail = " +
+                    "'" + customer.getEmail() + "'" + "AND CustomerID = " + "'" + customer.getCustomerID() + "'";
+
+            PreparedStatement stm = con.prepareStatement(query);
+            stm.executeUpdate();
+            System.out.println("Updated!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteCustomerAccount(Customer customer) {
+        try{
+            String statement = "DELETE FROM customeraccount WHERE CustomerID = "+customer.getCustomerID();
+            PreparedStatement stm = con.prepareStatement(statement);
+            stm.executeUpdate();
+            System.out.println("Deleted!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getLatestCustomerID() {
+        try{
+            String query = "SELECT MAX(CustomerID) from customeraccount";
+            PreparedStatement stm = con.prepareStatement(query);
+            ResultSet rs =stm.executeQuery();
+
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int getThisCustomerID(Customer customer) {
+        try {
+            String query = "SELECT CustomerID from customeraccount WHERE CustomerEmail = " + "'" + customer.getEmail() + "'";
+            PreparedStatement stm = con.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  -1;
     }
 
     public int getCustomerID() {

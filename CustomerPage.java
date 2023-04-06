@@ -5,16 +5,22 @@ import java.awt.event.ActionListener;
 
 public class CustomerPage extends JFrame {
     private JPanel customerPanel;
-    private JButton createAccountButton;
-    private JButton editAccountButton;
+    private JTextField firstName;
+    private JTextField lastName;
+    private JTextField email;
+    private JButton addButton;
     private JButton backButton;
+    private JComboBox discount;
+    private JComboBox type;
+    private JButton updateButton;
+    private JButton deleteButton;
     private JFrame customerFrame;
 
     public CustomerPage() {
-        createCustomerPage();
+        createPage();
     }
 
-    public void createCustomerPage() {
+    public void createPage() {
         customerFrame = new JFrame("Innovotype");
         customerFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         customerFrame.setPreferredSize(new Dimension(500,500));
@@ -24,20 +30,44 @@ public class CustomerPage extends JFrame {
         customerFrame.setLocationRelativeTo(null);
         customerFrame.setVisible(true);
 
-        createAccountButton.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCustomerPage addCustomerPage = new AddCustomerPage();
-                addCustomerPage.setVisible(false);
-                customerFrame.dispose();
+                if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
+                    System.out.println("Missing fields, Please fill out all the required fields");
+                    return;
+                }
+                Customer customer = new Customer(firstName.getText(), lastName.getText(),
+                        String.valueOf(type.getSelectedItem()), email.getText());
+                customer.setCustomerID(Customer.getLatestCustomerID() + 1);
+                Customer.addCustomerAccount(customer);
             }
         });
-        editAccountButton.addActionListener(new ActionListener() {
+        updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditCustomerPage editCustomerPage = new EditCustomerPage();
-                editCustomerPage.setVisible(false);
-                customerFrame.dispose();
+                if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
+                    System.out.println("Missing fields, Please fill out all the required fields");
+                    return;
+                }
+                Customer newCustomer = new Customer(firstName.getText(), lastName.getText(),
+                        String.valueOf(type.getSelectedItem()), email.getText());
+                newCustomer.setCustomerID(Customer.getThisCustomerID(newCustomer));
+                Customer.updateCustomerAccount(newCustomer);
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
+                    System.out.println("Missing fields, Please fill out all the required fields");
+                    return;
+                }
+                Customer deleteCustomer = new Customer(firstName.getText(), lastName.getText(),
+                        String.valueOf(type.getSelectedItem()), email.getText());
+                deleteCustomer.setCustomerID(Customer.getThisCustomerID(deleteCustomer));
+                Customer.deleteCustomerAccount(deleteCustomer);
+                deleteCustomer = null;
             }
         });
         backButton.addActionListener(new ActionListener() {
@@ -49,10 +79,5 @@ public class CustomerPage extends JFrame {
                 customerFrame.dispose();
             }
         });
-
-    }
-
-    public JPanel getCustomerPanel() {
-        return customerPanel;
     }
 }

@@ -281,23 +281,6 @@ public class Blank {
         }
     }
 
-
-
-    public static void reAllocateBlank(Blank blank, Employee fromEmployee, Employee toEmployee){
-        try{
-
-
-            String update = "UPDATE `blanks` SET `employeesIDBlanks` = '" + toEmployee.getEmployeeID()+"' WHERE `blankType` = " + blank.getBlankType();
-
-            PreparedStatement stm = con.prepareStatement(update);
-
-            stm.executeUpdate(update);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean deleteBlank(Blank blank){
         try{
 

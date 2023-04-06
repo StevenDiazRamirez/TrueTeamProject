@@ -49,7 +49,6 @@ public class AllocateBlanksPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Blank.allocateBlank(Integer.parseInt(comboBox1.getSelectedItem().toString()), Integer.parseInt(amountField.getText()), Integer.parseInt(employeeIDFIeld.getText()), 0);
-                System.out.println("DONE!");
             }
         });
     }
