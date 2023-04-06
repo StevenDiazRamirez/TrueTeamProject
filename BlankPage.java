@@ -7,7 +7,7 @@ public class BlankPage extends JFrame {
     private JPanel blankPanel;
     private JButton viewBlanksButton;
     private JButton orderBlanksButton;
-    private JButton allocateReallocateButton;
+    private JButton allocateButton;
     private JButton reportBlanksButton;
     private JButton backButton;
     private JFrame blankFrame;
@@ -32,6 +32,7 @@ public class BlankPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ViewBlanksPage viewBlanksPage = new ViewBlanksPage();
                 viewBlanksPage.setVisible(false);
+                System.out.println(MainPage.getProfile().getRole());
                 blankFrame.dispose();
             }
         });
@@ -43,7 +44,7 @@ public class BlankPage extends JFrame {
                 blankFrame.dispose();
             }
         });
-        allocateReallocateButton.addActionListener(new ActionListener() {
+        allocateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AllocateBlanksPage allocateBlanksPage = new AllocateBlanksPage();
@@ -61,6 +62,7 @@ public class BlankPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainPage mainPage = new MainPage();
+                mainPage.createMainPage(MainPage.getProfile());
                 mainPage.setVisible(false);
                 blankFrame.dispose();
             }

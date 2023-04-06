@@ -38,6 +38,7 @@ public class InterlineReportPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainPage mainPage = new MainPage();
+                mainPage.createMainPage(MainPage.getProfile());
                 mainPage.setVisible(false);
                 reportFrame.dispose();
             }

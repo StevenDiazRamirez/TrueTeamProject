@@ -16,11 +16,17 @@ public class MainPage extends JFrame {
     private JButton restoreButton;
     private JFrame mainFrame;
 
-    public MainPage() {
-        createMainPage();
+    public static Employee profile;
+
+    public static Employee getProfile() {
+        return profile;
     }
 
-    private void createMainPage() {
+    public MainPage() {
+    }
+
+    public void createMainPage(Employee profile) {
+        MainPage.profile = profile;
 
         mainFrame = new JFrame("Innovotype");
         mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);

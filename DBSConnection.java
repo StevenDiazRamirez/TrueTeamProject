@@ -22,18 +22,4 @@ public class DBSConnection {
         }
         return con;
     }
-
-  /*  public static void main(String[] args) {
-        Connection con = DBSConnection.getConnection();
-
-        try {
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM java_system_db.people");
-            while (rs.next()) {
-                System.out.println(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } */
 }

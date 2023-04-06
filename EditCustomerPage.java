@@ -52,6 +52,7 @@ public class EditCustomerPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainPage mainPage = new MainPage();
+                mainPage.createMainPage(MainPage.getProfile());
                 mainPage.setVisible(false);
                 editCustomerFrame.dispose();
             }

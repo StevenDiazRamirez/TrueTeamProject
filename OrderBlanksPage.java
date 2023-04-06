@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 public class OrderBlanksPage extends JFrame {
     private JPanel orderBlankPanel;
     private JComboBox comboBox1;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField amountField;
     private JButton addBlanksButton;
     private JButton backButton;
     private JButton mainMenuButton;
@@ -40,6 +38,7 @@ public class OrderBlanksPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainPage mainPage = new MainPage();
+                mainPage.createMainPage(MainPage.getProfile());
                 mainPage.setVisible(false);
                 orderBlankFrame.dispose();
             }
@@ -47,7 +46,8 @@ public class OrderBlanksPage extends JFrame {
         addBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Blank.orderBlanks(Integer.parseInt(amountField.getText()), Integer.parseInt(comboBox1.getSelectedItem().toString()));
+                System.out.println("DONE!");
             }
         });
 
