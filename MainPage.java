@@ -18,10 +18,6 @@ public class MainPage extends JFrame {
 
     public static Employee profile;
 
-    public static Employee getProfile() {
-        return profile;
-    }
-
     public MainPage() {
     }
 
@@ -93,13 +89,17 @@ public class MainPage extends JFrame {
                 mainFrame.dispose();
             }
         });
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginPage loginPage = new LoginPage();
+                loginPage.setVisible(false);
+                mainFrame.dispose();
+            }
+        });
     }
 
-    public void backup() {
-        String location, filename;
-
-        JFileChooser path = new JFileChooser();
-        path.showOpenDialog(this);
+    public static Employee getProfile() {
+        return profile;
     }
-
 }

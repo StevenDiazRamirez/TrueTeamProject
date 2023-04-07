@@ -36,6 +36,7 @@ public class LoginPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Employee.login(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()))) {
                     Employee employee = LoginPage.loggedInProfile(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()));
+                    System.out.println(usernameTextField.getText());
                     MainPage mainPage = new MainPage();
                     mainPage.setVisible(false);
                     mainPage.createMainPage(employee);
@@ -68,6 +69,21 @@ public class LoginPage extends JFrame {
         return null;
     }
 
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public void setUsernameTextField(JTextField usernameTextField) {
+        this.usernameTextField = usernameTextField;
+    }
+
+    public JPasswordField getPasswordField1() {
+        return passwordField1;
+    }
+
+    public void setPasswordField1(JPasswordField passwordField1) {
+        this.passwordField1 = passwordField1;
+    }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
