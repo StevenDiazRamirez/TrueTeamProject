@@ -9,11 +9,11 @@ public class MainPage extends JFrame {
     private JButton manageReportsButton;
     private JButton manageCommissionRateButton;
     private JButton createSaleButton;
-    private JButton backupButton;
+    private JButton backupRestoreButton;
     private JButton manageCustomerAccountsButton;
     private JButton manageBlanksButton;
     private JButton refundButton;
-    private JButton restoreButton;
+    private JButton logoutButton;
     private JFrame mainFrame;
 
     public static Employee profile;
@@ -61,10 +61,11 @@ public class MainPage extends JFrame {
                 mainFrame.dispose();
             }
         });
-        backupButton.addActionListener(new ActionListener() {
+        backupRestoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("backup Complete!");
+                BackupRestorePage backupRestorePage = new BackupRestorePage();
+                backupRestorePage.setVisible(false);
                 mainFrame.dispose();
             }
         });
@@ -92,13 +93,13 @@ public class MainPage extends JFrame {
                 mainFrame.dispose();
             }
         });
-        restoreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Restoring latest backup..");
-                mainFrame.dispose();
-            }
-        });
+    }
+
+    public void backup() {
+        String location, filename;
+
+        JFileChooser path = new JFileChooser();
+        path.showOpenDialog(this);
     }
 
 }
