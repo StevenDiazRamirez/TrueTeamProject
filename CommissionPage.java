@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 
 public class CommissionPage extends JFrame {
     private JPanel commissionPanel;
-    private JTable table1;
     private JButton addButton;
-    private JButton deleteButton;
-    private JButton editButton;
+    private JButton viewButton;
     private JButton backButton;
     private JFrame commissionFrame;
 
@@ -38,19 +36,17 @@ public class CommissionPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                AddCommissionPage addCommissionPage = new AddCommissionPage();
+                addCommissionPage.setVisible(false);
+                commissionFrame.dispose();
             }
         });
-        deleteButton.addActionListener(new ActionListener() {
+        viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+                ViewCommissionPage viewCommissionPage = new ViewCommissionPage();
+                viewCommissionPage.setVisible(false);
+                commissionFrame.dispose();
             }
         });
     }

@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Commission {
@@ -20,6 +24,35 @@ public class Commission {
         this.startDate = startDate;
         this.endDate = endDate;
         this.blankType = blankType;
+    }
+
+    public static void addCommission(float amount, int blankType, Date endDate) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT MAX(CommissionID) FROM commission";
+            PreparedStatement highestCommissionID = con.prepareStatement(searchQuery);
+
+
+            ResultSet rs = highestCommissionID.executeQuery(searchQuery);
+            int highestCommission = 1;
+            while (rs.next()) {
+                highestCommission = rs.getInt(1) + 1;
+            }
+
+            java.sql.Date startDate = new java.sql.Date(new Date().getTime());
+            System.out.println(startDate);
+
+            java.sql.Date endDate2 = new java.sql.Date(endDate.getTime());
+            System.out.println(endDate2);
+
+            String addQuery = "INSERT INTO commission (`CommissionID`, `amount`, `commissionDate`, `commissionEndDate`, `blankType`) " +
+                    "VALUES ('" + highestCommission + "', '" + amount + "', '" + startDate + "', '" + endDate2 + "', '" + blankType + "');";
+
+            highestCommissionID.executeUpdate(addQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Date getStartDate() {

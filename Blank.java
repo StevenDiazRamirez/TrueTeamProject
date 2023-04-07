@@ -165,7 +165,7 @@ public class Blank {
         try {
             Connection con = DBSConnection.getConnection();
 
-            String searchQuery = "SELECT MAX(BlankID) FROM blanks WHERE blankType = " + type;
+            String searchQuery = "SELECT MAX(BlankID) FROM blanks";
             PreparedStatement highestblankID = con.prepareStatement(searchQuery);
 
 
@@ -178,7 +178,8 @@ public class Blank {
             java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 
             for (int i = 0; i < amount; i++) {
-                String addQuery = "INSERT INTO blanks (`blankID`, `blankType`, `status`, `dateRecieved`) VALUES ('" + (highestBlank + i) + "' , '" + type + "', 'Received', '" + sqlDate + "');";
+                String addQuery = "INSERT INTO blanks (`blankID`, `blankType`, `status`, `dateRecieved`) " +
+                        "VALUES ('" + (highestBlank + i) + "' , '" + type + "', 'Received', '" + sqlDate + "');";
 
                 highestblankID.executeUpdate(addQuery);
             }

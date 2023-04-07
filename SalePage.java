@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-public class SalePage extends JFrame {
+public class SalePage extends JFrame  {
     private JPanel salePanel;
     private JComboBox comboBox1;
     private JComboBox comboBox2;
@@ -11,10 +13,11 @@ public class SalePage extends JFrame {
     private JComboBox comboBox4;
     private JButton confirmButton;
     private JButton voidButton;
-    private JTextField textField1;
-    private JTextField textField2;
+    private JTextField amountField;
     private JButton backButton;
+    private JFormattedTextField dateField;
     private JFrame saleFrame;
+    private DateFormat dateFormat;
 
     public SalePage() {
         createSalePage();
@@ -30,30 +33,6 @@ public class SalePage extends JFrame {
         saleFrame.setLocationRelativeTo(null);
         saleFrame.setVisible(true);
 
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        comboBox2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        comboBox3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        comboBox4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
