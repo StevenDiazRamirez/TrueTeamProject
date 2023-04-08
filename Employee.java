@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Date;
 
 public class Employee {
@@ -12,6 +9,8 @@ public class Employee {
         private String username;
         private String role;
         private String password;
+
+        private static Connection con = DBSConnection.getConnection();
 
         public Employee(String firstName, String lastName, String username, String password, String role) {
             this.firstName = firstName;
@@ -26,7 +25,7 @@ public class Employee {
                 Connection con = DBSConnection.getConnection();
 
                 Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery("SELECT * FROM EmployeeAccount WHERE employeePassword = " + '"' + password + '"');
+                ResultSet rs = stm.executeQuery("SELECT * FROM EmployeeAccount WHERE Password = " + '"' + password + '"');
                 while (rs.next()) {
                     String name = rs.getString("Username");
                     if (username.equals(name)) {
@@ -39,6 +38,35 @@ public class Employee {
             }
             //AlertWindow.showInformationAlert("Wrong details","Please make sure that the ID and the password are both correct!");
             return false;
+        }
+
+        public static int getLatestEmployeeID() {
+            try{
+                String query = "SELECT MAX(EmployeeID) from employeeaccount";
+                PreparedStatement stm = con.prepareStatement(query);
+                ResultSet rs =stm.executeQuery();
+
+                while(rs.next()){
+                    return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return  -1;
+        }
+
+        public static void addEmployeeAccount(Employee employee) {
+            try {
+                String query = "INSERT INTO employeeaccount (`EmployeeID`, 'FirstName', 'LastName', `Username`, `employeePassword`," +
+                        "`AccountType`) VALUES" + "('" + employee.getEmployeeID() + "', '" + employee.getFirstname() + "', '" +
+                        employee.getLastname() + "', '" + employee.getUsername() + "', " + employee.getPassword() + "', '" + employee.getRole() + "')";
+
+                PreparedStatement stm = con.prepareStatement(query);
+                stm.executeUpdate();
+                System.out.println("Added!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         public String getPassword() {

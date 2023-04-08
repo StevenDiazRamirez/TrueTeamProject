@@ -48,14 +48,6 @@ public class ViewCommissionPage extends JFrame {
                 viewCommissionFrame.dispose();
             }
         });
-       /* commissionTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int selectedRow = commissionTable.getSelectedRow();
-                DefaultTableModel model = (DefaultTableModel) commissionTable.getModel();
-            }
-        }); */
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

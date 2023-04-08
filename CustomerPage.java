@@ -34,7 +34,7 @@ public class CustomerPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
-                    System.out.println("Missing fields, Please fill out all the required fields");
+                    JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
                 }
                 Customer customer = new Customer(firstName.getText(), lastName.getText(),

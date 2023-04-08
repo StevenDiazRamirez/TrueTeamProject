@@ -14,6 +14,7 @@ public class MainPage extends JFrame {
     private JButton manageBlanksButton;
     private JButton refundButton;
     private JButton logoutButton;
+    private JButton manageEmployeesButton;
     private JFrame mainFrame;
 
     public static Employee profile;
@@ -33,6 +34,14 @@ public class MainPage extends JFrame {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
+        manageEmployeesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ManageEmployeesPage manageEmployeesPage = new ManageEmployeesPage();
+                manageEmployeesPage.setVisible(false);
+                mainFrame.dispose();
+            }
+        });
         manageReportsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

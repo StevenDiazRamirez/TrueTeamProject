@@ -51,12 +51,12 @@ public class LoginPage extends JFrame {
             Connection con = DBSConnection.getConnection();
 
             Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM EmployeeAccount WHERE employeePassword = " + '"' + password + '"' + "AND Username = " + '"' + username + '"');
+            ResultSet rs = stm.executeQuery("SELECT * FROM EmployeeAccount WHERE Password = " + '"' + password + '"' + "AND Username = " + '"' + username + '"');
             while (rs.next()) {
-                Employee employee = new Employee(rs.getString("First Name"),
-                        rs.getString("Last Name"),
+                Employee employee = new Employee(rs.getString("FirstName"),
+                        rs.getString("LastName"),
                         rs.getString("Username"),
-                        rs.getString("employeePassword"),
+                        rs.getString("Password"),
                         rs.getString("AccountType"));
                 employee.setEmployeeID(rs.getInt("EmployeeID"));
                 return employee;
