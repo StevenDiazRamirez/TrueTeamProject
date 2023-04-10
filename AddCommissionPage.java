@@ -42,7 +42,6 @@ public class AddCommissionPage extends JFrame {
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
-                    System.out.println(endDate);
                     Commission.addCommission(Float.parseFloat(amountField.getText()), Integer.parseInt(comboBox1.getSelectedItem().toString()), endDate);
                     JOptionPane.showMessageDialog(null, "Commission added!");
                 } else {

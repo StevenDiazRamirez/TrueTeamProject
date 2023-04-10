@@ -41,10 +41,7 @@ public class Commission {
             }
 
             java.sql.Date startDate = new java.sql.Date(new Date().getTime());
-            System.out.println(startDate);
-
             java.sql.Date endDate2 = new java.sql.Date(endDate.getTime());
-            System.out.println(endDate2);
 
             String addQuery = "INSERT INTO commission (`CommissionID`, `amount`, `commissionDate`, `commissionEndDate`, `blankType`) " +
                     "VALUES ('" + highestCommission + "', '" + amount + "', '" + startDate + "', '" + endDate2 + "', '" + blankType + "');";

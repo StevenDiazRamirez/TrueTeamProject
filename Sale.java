@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Sale {
@@ -41,7 +45,54 @@ public class Sale {
         this.cardNumber = cardNumber;
     }
 
-    public Sale(){}
+    public static void addNewCashSaleDomestic(int blankType, int blankID, float amount) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT MAX(SaleID) FROM sale";
+            PreparedStatement highestSaleID = con.prepareStatement(searchQuery);
+
+
+            ResultSet rs = highestSaleID.executeQuery(searchQuery);
+            int highestSale = 1;
+            while (rs.next()) {
+                highestSale = rs.getInt(1) + 1;
+            }
+
+            java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
+
+            //if customer in new (no late pay or discount)
+            String addQuery = "INSERT INTO sale (`SaleID`, `blankType`, `blanksID`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                    "`saleDate`) VALUES ('" + highestSale + "', '" + blankType + "', '" + blankID +
+                    "', '" + "CASH" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate + "');";
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getCustomerType(String customerEmail) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT AccountType FROM customeraccount WHERE CustomerEmail = " + "'" + customerEmail + "'";
+            PreparedStatement accountType = con.prepareStatement(searchQuery);
+
+
+            ResultSet rs = accountType.executeQuery(searchQuery);
+            String customerAccountType = "Customer";
+            while (rs.next()) {
+                customerAccountType = rs.getString(1);
+            }
+
+            return customerAccountType;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public int getSaleID() {
         return saleID;
