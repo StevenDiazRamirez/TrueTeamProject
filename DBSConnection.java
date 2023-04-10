@@ -16,7 +16,7 @@ public class DBSConnection {
     public static Connection getConnection(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ats","root","8W3hMJoZ");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ats","root","");
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
