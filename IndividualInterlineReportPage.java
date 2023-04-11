@@ -2,15 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class IndividualInterlineReportPage extends JFrame {
     private JTextField textField1;
     private JPanel reportPanel;
     private JTextField textField2;
-    private JTextField textField3;
     private JButton generateButton;
     private JButton backButton;
     private JButton mainMenuButton;
+    private JComboBox employeeID;
     private JFrame reportFrame;
 
     public IndividualInterlineReportPage() {
@@ -26,6 +30,8 @@ public class IndividualInterlineReportPage extends JFrame {
         reportFrame.pack();
         reportFrame.setLocationRelativeTo(null);
         reportFrame.setVisible(true);
+
+        getEmployees();
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -50,5 +56,21 @@ public class IndividualInterlineReportPage extends JFrame {
 
             }
         });
+    }
+
+    public void getEmployees() {
+        try {
+            Connection con = DBSConnection.getConnection();
+            Statement stm = con.createStatement();
+            String query = "SELECT EmployeeID FROM employeeaccount";
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                int employee = rs.getInt(1);
+                employeeID.addItem(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

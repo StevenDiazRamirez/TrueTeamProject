@@ -2,15 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class IndividualDomesticReportPage extends JFrame {
     private JPanel reportPanel;
     private JTextField textField1;
     private JTextField textField2;
-    private JTextField textField3;
     private JButton generateButton;
     private JButton backButton;
     private JButton mainMenuButton;
+    private JComboBox employeeID;
     private JFrame reportFrame;
 
     public IndividualDomesticReportPage() {
@@ -26,6 +27,8 @@ public class IndividualDomesticReportPage extends JFrame {
         reportFrame.pack();
         reportFrame.setLocationRelativeTo(null);
         reportFrame.setVisible(true);
+
+        getEmployees();
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -47,8 +50,33 @@ public class IndividualDomesticReportPage extends JFrame {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //createReport();
             }
         });
+    }
+
+    public void getEmployees() {
+        try {
+            Connection con = DBSConnection.getConnection();
+            Statement stm = con.createStatement();
+            String query = "SELECT EmployeeID FROM employeeaccount";
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                int employee = rs.getInt(1);
+                employeeID.addItem(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createReport(int employeeID, Date startDate, Date endDate) {
+        JFrame report = new JFrame("Individual Domestic Report");
+        report.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        String [] headers;
+        headers = new String[]{"Type","ID","GBP","Taxes","Total Price/GBP", "Cash","CC number","GBP","TotalPaid","Assessable Amount","Commission %","Non-Assessable Amount"};
+
     }
 }

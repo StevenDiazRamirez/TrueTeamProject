@@ -10,10 +10,11 @@ public class CustomerPage extends JFrame {
     private JTextField email;
     private JButton addButton;
     private JButton backButton;
-    private JComboBox discount;
+    private JComboBox discountType;
     private JComboBox type;
     private JButton updateButton;
     private JButton deleteButton;
+    private JTextField discountAmount;
     private JFrame customerFrame;
 
     public CustomerPage() {
@@ -33,14 +34,36 @@ public class CustomerPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
+                if (firstName.getText().isEmpty() || lastName.getText().isEmpty() || email.getText().isEmpty() || String.valueOf(type.getSelectedItem()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
+                } else {
+                    if (!type.getSelectedItem().equals("Valued")) {
+                        Customer customer = new Customer(firstName.getText(), lastName.getText(),
+                                String.valueOf(type.getSelectedItem()), email.getText());
+                        customer.setCustomerID(Customer.getLatestCustomerID() + 1);
+                        Customer.addCustomerAccount(customer);
+                    } else {
+                        Discount discount = new Discount(discountType.getSelectedItem().toString());
+                        discount.setDiscountID(Discount.getLatestDiscountID() + 1);
+                        Customer customer = new Customer(firstName.getText(), lastName.getText(),
+                                String.valueOf(type.getSelectedItem()), email.getText(), discount.getDiscountID());
+                        customer.setCustomerID(Customer.getLatestCustomerID() + 1);
+                        Customer.addCustomerAccountValued(customer);
+                        Discount.addDiscount(discount);
+                        if (discountType.getSelectedItem().equals("Fixed")) {
+                            FixedDiscount fixedDiscount = new FixedDiscount(discount.getDiscountID(), Float.parseFloat(discountAmount.getText()));
+                            fixedDiscount.setFixedID(FixedDiscount.getLatestFixedDiscountID() + 1);
+                            FixedDiscount.addFixedDiscount(fixedDiscount);
+                        }
+                        if (discountType.getSelectedItem().equals("Flexible")) {
+                            System.out.println("test");
+                            FlexibleDiscount flexibleDiscount = new FlexibleDiscount(0, 15, Float.parseFloat(discountAmount.getText()), discount.getDiscountID());
+                            flexibleDiscount.setFlexibleID(FlexibleDiscount.getLatestFlexibleDiscountID() + 1);
+                            FlexibleDiscount.addFlexibleDiscount(flexibleDiscount);
+                        }
+                    }
                 }
-                Customer customer = new Customer(firstName.getText(), lastName.getText(),
-                        String.valueOf(type.getSelectedItem()), email.getText());
-                customer.setCustomerID(Customer.getLatestCustomerID() + 1);
-                Customer.addCustomerAccount(customer);
             }
         });
         updateButton.addActionListener(new ActionListener() {

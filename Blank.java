@@ -1,5 +1,3 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import javax.swing.*;
 import java.sql.*;
@@ -30,20 +28,17 @@ public class Blank {
 
     private static Connection con = DBSConnection.getConnection();
 
-    public static String checkBlankStatus(int blankID, int blankType) {
+    public static String checkBlankStatus(int blankID) {
         try {
 
             Statement stm = con.createStatement();
 
-            String searchStatement = "SELECT status FROM blanks WHERE blankID = " + blankID+" AND blankType = "+ blankType;
+            String searchStatement = "SELECT status FROM blanks WHERE blankID = " + blankID;
 
             ResultSet rs = stm.executeQuery(searchStatement);
             while (rs.next()) {
                 return rs.getString(1);
             }
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,107 +56,6 @@ public class Blank {
             e.printStackTrace();
         }
     }
-
-    public static void auditorBlank(Blank blank){
-        try {
-            boolean hasAuditor = false;
-            String checkAuditor = "SELECT couponID FROM coupons c, blanks b WHERE c.blankIDCoupons = "+blank.getBlankID()+" AND c.blankType = "+blank.getBlankType()+" AND c.blankIDCoupons = b.blankID AND c.couponType = 'Auditor'";
-
-            PreparedStatement stm = con.prepareStatement(checkAuditor);
-
-            ResultSet rs = stm.executeQuery();
-            //do autoincrement here?
-            while(rs.next()){
-                if(rs.getInt("couponID")>0){
-                    hasAuditor = true;
-                    break;
-                }
-            }
-
-            String createStatement ="INSERT INTO `ats`.`coupons` (`couponType`, `blankIDCoupons`, `blankType`) VALUES ('Auditor', '"+blank.getBlankID()+ "', '"+blank.getBlankType()+"');";
-
-            PreparedStatement stm2 = con.prepareStatement(createStatement);
-            if(!hasAuditor){
-                stm.executeUpdate(createStatement);
-                //AlertWindow.showInformationAlert("Success","An auditor coupon has been added to the blank");
-            }else{
-                //AlertWindow.showInformationAlert("Unsuccessful","The blank already has an auditor blank");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void validateBlank(Blank blank, String destTo, String destFrom){
-        try{
-
-            int maxCoupons = 0;
-            int actualCoupons = 0;
-
-            switch(blank.getBlankType()){
-                case 444:
-                    maxCoupons = 4;
-                    break;
-                case 440:
-                    maxCoupons = 4;
-                    break;
-                case 420:
-                    maxCoupons = 2;
-                    break;
-                case 201:
-                    maxCoupons = 2;
-                    break;
-                case 101:
-                    maxCoupons = 1;
-                    break;
-            }
-            //check the blank's type, set maxCoupons according to that
-            /*
-            max Coupons for each type:
-                444,440 = 4
-                420 = 2
-                201 = 2
-                101 = 1;
-            */
-
-            //check how many coupons blankNumber has, than assign actualCoupons according to that
-            String actualCouponSearch = "SELECT COUNT(couponID) FROM coupons c\n" +
-                    "WHERE c.blankIDCoupons = "+blank.getBlankID()+"\n" +
-                    "AND couponType = \"Flight\"\n" +
-                    "AND c.blankType = "+blank.getBlankType();
-
-            PreparedStatement stm = con.prepareStatement(actualCouponSearch);
-
-            ResultSet couponNumbers = stm.executeQuery(actualCouponSearch);
-            while(couponNumbers.next()){
-                actualCoupons =couponNumbers.getInt(1);
-            }
-
-            //create new coupon, with type flight, destTo and destFrom...
-
-            if(actualCoupons<maxCoupons) {
-                String addStatement = "INSERT INTO `ats`.`coupons` (`couponType`, `blankIDCoupons`, `blankType`) VALUES ('Flight', '" + blank.getBlankID() + "','"+blank.getBlankType()+"');";
-                stm.executeUpdate(addStatement);
-
-                String highestCoupon = "SELECT MAX(couponID) FROM coupons ";
-                ResultSet couponIDs = stm.executeQuery(highestCoupon);
-                int couponID = 0;
-                while (couponIDs.next()) {
-                    couponID = couponIDs.getInt(1);
-                }
-
-                String addDestination = "INSERT INTO `ats`.`coupondestination` (`destinationTo`, `destinationFrom`, `couponIDDestination`) VALUES ('" + destTo + "', '" + destFrom + "', '" + couponID + "')";
-
-                stm.executeUpdate(addDestination);
-                //changeStatus(blank.getBlankID(),blank.getBlankType(),"Valid");
-            }else{
-                //AlertWindow.showInformationAlert("Max Coupons", "The blank you are trying to validate has already reached it's maximum coupons");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }}
 
     public static void orderBlanks(int amount, int type){
         try {
@@ -312,20 +206,6 @@ public class Blank {
         return true;
         // AlertWindow.showInformationAlert("Success!", "Blank successfully delete");
     }
-
-    public static void deAllocate(Blank blank){
-        try{
-            String update = "UPDATE `blanks` SET `employeesIDBlanks` = NULL WHERE `blankID` = '"+blank.getBlankID()+"' AND `Type` = "+blank.getBlankType();
-
-            PreparedStatement stm = con.prepareStatement(update);
-
-            stm.executeUpdate(update);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 
         public int getBlankID() {
             return blankID;

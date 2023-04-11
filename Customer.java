@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 import java.util.Date;
 
@@ -35,9 +36,24 @@ public class Customer {
 
             PreparedStatement stm = con.prepareStatement(query);
             stm.executeUpdate();
-            System.out.println("Added!");
+            JOptionPane.showMessageDialog(null, "Added!");
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void addCustomerAccountValued(Customer customer) {
+        try {
+            String query = "INSERT INTO customeraccount (`CustomerID`,`FirstName`, `LastName`, `AccountType`, `CustomerEmail`, `DiscountIDCustomer`) " +
+                    "VALUES " + "('" + customer.getCustomerID() + "', '" + customer.getFirstName() + "', '" + customer.getLastName()
+                    + "', '" + customer.getType() + "', '" + customer.getEmail() + "', '" + customer.getDiscountID() + "')";
+
+            PreparedStatement stm = con.prepareStatement(query);
+            stm.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Added!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Email already in use");
         }
     }
 
@@ -48,7 +64,7 @@ public class Customer {
 
             PreparedStatement stm = con.prepareStatement(query);
             stm.executeUpdate();
-            System.out.println("Updated!");
+            JOptionPane.showMessageDialog(null,"Updated!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +75,7 @@ public class Customer {
             String statement = "DELETE FROM customeraccount WHERE CustomerID = "+customer.getCustomerID();
             PreparedStatement stm = con.prepareStatement(statement);
             stm.executeUpdate();
-            System.out.println("Deleted!");
+            JOptionPane.showMessageDialog(null,"Deleted!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

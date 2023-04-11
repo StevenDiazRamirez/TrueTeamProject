@@ -1,9 +1,16 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class FlexibleDiscount extends Discount{
 
-    private int ID;
+    private int flexibleID;
     private float lowerRange;
     private float upperRange;
     private float amount;
+
+    private static Connection con = DBSConnection.getConnection();
 
     public FlexibleDiscount(float lowerRange, float upperRange, float amount, int discountID){
         super("Flexible");
@@ -14,6 +21,34 @@ public class FlexibleDiscount extends Discount{
 
     }
 
+    public static void addFlexibleDiscount(FlexibleDiscount flexibleDiscount) {
+        try {
+            String query = "INSERT INTO flexiblediscount (flexibleID, `flexibleDiscountID`, `discountAmount`) VALUES " +
+                    "('" +  flexibleDiscount.getFlexibleID() + "', '" + flexibleDiscount.getDiscountID() +
+                    "', '" + flexibleDiscount.getAmount() +"')";
+
+            PreparedStatement stm = con.prepareStatement(query);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getLatestFlexibleDiscountID() {
+        try{
+            String query = "SELECT MAX(flexibleID) from flexiblediscount";
+            PreparedStatement stm = con.prepareStatement(query);
+            ResultSet rs =stm.executeQuery();
+
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public float getAmount() {
         return amount;
     }
@@ -22,12 +57,12 @@ public class FlexibleDiscount extends Discount{
         this.amount = amount;
     }
 
-    public int getID() {
-        return ID;
+    public int getFlexibleID() {
+        return flexibleID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setFlexibleID(int flexibleID) {
+        this.flexibleID = flexibleID;
     }
 
     public float getLowerRange() {

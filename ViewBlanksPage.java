@@ -1,5 +1,4 @@
 
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
-import java.util.Date;
 
 public class ViewBlanksPage extends JFrame {
     private JPanel viewBlankPanel;
@@ -125,7 +123,7 @@ public class ViewBlanksPage extends JFrame {
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
-                if (Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Sold")) {
+                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
                             rs.getDate(4),
@@ -177,7 +175,7 @@ public class ViewBlanksPage extends JFrame {
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
-                if (Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Sold")) {
+                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
                             rs.getDate(4),

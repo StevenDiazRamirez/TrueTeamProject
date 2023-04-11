@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +25,14 @@ public class SalePage extends JFrame  {
     private JButton getCommissionButton;
     private JTextField taxes;
     private JTextField cardDetails;
-    private JButton fixedDiscountButton;
-    private JButton flexibleDiscountButton;
+    private JButton getDiscountButton;
     private JFrame saleFrame;
     private JPanel panel;
 
     private Date lateDate;
-    private float fixedDiscount;
-    private float flexibleDiscount;
+    private Float discountAmount;
+    private float discountPrice;
+    private boolean allFieldsFilled;
 
     public SalePage() {
         createSalePage();
@@ -51,16 +50,12 @@ public class SalePage extends JFrame  {
 
         getBlanks();
 
-        fixedDiscountButton.addActionListener(new ActionListener() {
+        getDiscountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createFixedDiscountPanel();
-            }
-        });
-        flexibleDiscountButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createFlexibleDiscountPanel();
+                getCustomerDiscount();
+                discountPrice = Float.parseFloat(amount.getText()) * (1-discountAmount/100);
+                amount.setText(String.valueOf(discountPrice));
             }
         });
         getCommissionButton.addActionListener(new ActionListener() {
@@ -79,6 +74,7 @@ public class SalePage extends JFrame  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createValid();
+
             }
         });
         confirmButton.addActionListener(new ActionListener() {
@@ -89,32 +85,35 @@ public class SalePage extends JFrame  {
                 int customerID = getSelectedCustomerID();
                 int commissionID = getSelectedCommissionID();
 
-                Blank.changeStatusSold(blankID, Integer.parseInt(blankType.getSelectedItem().toString()));
+               System.out.println(allFieldsFilled);
 
-                if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
-                    Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
-                            Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
-                }
-                if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
-                    Sale.addNewCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
-                            Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, Integer.parseInt(cardDetails.getText()));
-                }
-                if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
-                    Sale.addNewCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
-                            Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
-                }
-                if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
-                    Sale.addNewCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
-                            Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID,
-                            Integer.parseInt(cardDetails.getText()));
-                }
+                if (allFieldsFilled) {
+
+                    Blank.changeStatusSold(blankID, Integer.parseInt(blankType.getSelectedItem().toString()));
+
+                    if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
+                        Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                                Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
+                    }
+                    if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
+                        Sale.addNewCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                                Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, Integer.parseInt(cardDetails.getText()));
+                    }
+                    if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
+                        Sale.addNewCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                                Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
+                    }
+                    if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
+                        Sale.addNewCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                                Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID,
+                                Integer.parseInt(cardDetails.getText()));
+                    }
+                } else JOptionPane.showMessageDialog(null, "Blank is not Valid");
             }
         });
         voidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(fixedDiscount);
-                System.out.println(flexibleDiscount);
             }
         });
         backButton.addActionListener(new ActionListener() {
@@ -150,18 +149,101 @@ public class SalePage extends JFrame  {
         }
 
         panel = new JPanel();
-        ArrayList<JTextField> textFields = new ArrayList<JTextField>();
+        ArrayList<JTextField> coupons = new ArrayList<JTextField>();
         for (int i = 0; i < numFields; i++) {
             JTextField textField = new JTextField(5);
             panel.add(textField);
-            textFields.add(textField);
+            coupons.add(textField);
         }
 
-        JOptionPane.showConfirmDialog(null, panel, "Coupons", JOptionPane.OK_CANCEL_OPTION);
-        for (JTextField textField : textFields) {
-            String text = textField.getText();
-            System.out.println(text);
+        int option = JOptionPane.showConfirmDialog(null, panel, "Coupons", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            if (blankType.getSelectedItem().equals(444) || blankType.getSelectedItem().equals(440)) {
+                Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
+                coupon.setDestFrom1(coupons.get(0).getText());
+                coupon.setDestTo1(coupons.get(1).getText());
+                coupon.setDestFrom2(coupons.get(2).getText());
+                coupon.setDestTo2(coupons.get(3).getText());
+                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                Coupon.addCoupons(coupon);
+            } else if (blankType.getSelectedItem().equals(420) || blankType.getSelectedItem().equals(201)) {
+                Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
+                coupon.setDestFrom1(coupons.get(0).getText());
+                coupon.setDestTo1(coupons.get(1).getText());
+                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                Coupon.addCoupons(coupon);
+
+            } else if (blankType.getSelectedItem().equals(101)) {
+                Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
+                coupon.setDestTo1(coupons.get(0).getText());
+                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                Coupon.addCoupons(coupon);
+            }
+
+            allFieldsFilled = true;
+            for (JTextField textField : coupons) {
+                if (textField.getText().isEmpty()) {
+                    allFieldsFilled = false;
+                    break;
+                }
+            }
         }
+    }
+
+    public void getCustomerDiscount() {
+        if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
+            String query = null;
+            if (getDiscountType().equals("Fixed")) {
+                query = "SELECT amount from fixeddiscount f, discount d WHERE d.DiscountID = f.fixedDiscountID AND d.DiscountID = " + getDiscountID();
+            } else if (getDiscountType().equals("Flexible")) {
+                query = "SELECT discountAmount from flexiblediscount f, discount d WHERE d.DiscountID = f.flexibleDiscountID AND d.DiscountID = " + getDiscountID();
+            }
+            try {
+                Connection con = DBSConnection.getConnection();
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery(query);
+                while (rs.next()) {
+                    discountAmount = rs.getFloat(1);
+                }
+                JOptionPane.showMessageDialog(null, "Discount Added!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getDiscountType() {
+        String type = "None";
+        try {
+            Connection con = DBSConnection.getConnection();
+            Statement stm = con.createStatement();
+            String query = "SELECT DiscountType from discount d, customeraccount c WHERE d.DiscountID = c.DiscountIDCustomer AND c.CustomerEmail = " + "'" + customerEmail.getText() + "'";
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                type = rs.getString(1);
+            }
+            return type;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return type;
+    }
+
+    public int getDiscountID() {
+        try {
+            Connection con = DBSConnection.getConnection();
+            Statement stm = con.createStatement();
+            String query = "SELECT DiscountIDCustomer from discount d, customeraccount c WHERE d.DiscountID = c.DiscountIDCustomer AND c.CustomerEmail = " + "'" + customerEmail.getText() + "'";
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void createLatePayPanel() {
@@ -178,32 +260,6 @@ public class SalePage extends JFrame  {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }
-        } else JOptionPane.showMessageDialog(null, "Customer not allowed");
-    }
-
-    public void createFixedDiscountPanel() {
-        if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
-            panel = new JPanel();
-            JTextField discount = new JTextField(5);
-            panel.add(discount);
-
-            int option = JOptionPane.showConfirmDialog(null, panel, "Fixed Discount", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                fixedDiscount = Float.parseFloat(discount.getText());
-            }
-        } else JOptionPane.showMessageDialog(null, "Customer not allowed");
-    }
-
-    public void createFlexibleDiscountPanel() {
-        if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
-            panel = new JPanel();
-            JTextField discount = new JTextField(5);
-            panel.add(discount);
-
-            int option = JOptionPane.showConfirmDialog(null, panel, "Flexible Discount", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                flexibleDiscount = Float.parseFloat(discount.getText());
             }
         } else JOptionPane.showMessageDialog(null, "Customer not allowed");
     }
