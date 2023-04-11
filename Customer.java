@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Date;
 
 public class Customer {
@@ -46,9 +43,8 @@ public class Customer {
 
     public static void updateCustomerAccount(Customer customer) {
         try {
-            String query = "UPDATE customeraccount SET AccountType = " + "'" + customer.getType() + "'" + " WHERE FirstName = " +
-                    "'" + customer.getFirstName() + "'" + "AND LastName = " + "'" + customer.getLastName() + "'" + "AND CustomerEmail = " +
-                    "'" + customer.getEmail() + "'" + "AND CustomerID = " + "'" + customer.getCustomerID() + "'";
+            String query = "UPDATE customeraccount SET AccountType = " + "'" + customer.getType() + "'" + " WHERE CustomerID = "
+                    + customer.getCustomerID();
 
             PreparedStatement stm = con.prepareStatement(query);
             stm.executeUpdate();
@@ -98,6 +94,7 @@ public class Customer {
         }
         return  -1;
     }
+
 
     public int getCustomerID() {
         return customerID;

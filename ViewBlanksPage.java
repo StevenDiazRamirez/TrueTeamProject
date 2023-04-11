@@ -63,7 +63,7 @@ public class ViewBlanksPage extends JFrame {
                 super.mouseClicked(e);
                 int selectedRow = blankTable.getSelectedRow();
                 DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
-                employeeField.setText(model.getValueAt(selectedRow,7).toString());
+                employeeField.setText(model.getValueAt(selectedRow,5).toString());
             }
         });
         reallocateButton.addActionListener(new ActionListener() {
@@ -78,7 +78,7 @@ public class ViewBlanksPage extends JFrame {
                         String blankID = blankTable.getValueAt(i, 0).toString();
                         DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
                         if (i >= 0)
-                            model.setValueAt(employeeField.getText(), i, 7);
+                            model.setValueAt(employeeField.getText(), i, 5);
 
                         int newID = Integer.parseInt(employeeField.getText());
 
@@ -113,32 +113,30 @@ public class ViewBlanksPage extends JFrame {
             model.setColumnIdentifiers(colName);
 
 
-            String blankID, blankType, status, destFrom, destTo, dateReceived, dateAssigned, employeeID;
+            String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
 
             while (rs.next()) {
                 blankID = rs.getString(1);
                 blankType = rs.getString(2);
                 status = rs.getString(3);
-                destFrom = rs.getString(4);
-                destTo = rs.getString(5);
-                dateReceived = rs.getString(6);
-                dateAssigned = rs.getString(7);
-                employeeID = rs.getString(8);
-                String[] row = {blankID, blankType, status, destFrom, destTo, dateReceived, dateAssigned, employeeID};
+                dateReceived = rs.getString(4);
+                dateAssigned = rs.getString(5);
+                employeeID = rs.getString(6);
+                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
                 if (Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Sold")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
-                            rs.getDate(6),
-                            rs.getDate(7),
-                            rs.getInt(8)
+                            rs.getDate(4),
+                            rs.getDate(5),
+                            rs.getInt(6)
                     );
                     blank.setBlankID(rs.getInt(1));
                 } else {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
-                            rs.getDate(6)
+                            rs.getDate(4)
                     );
                     blank.setBlankID(rs.getInt(1));
                 }
@@ -167,32 +165,30 @@ public class ViewBlanksPage extends JFrame {
             model.setColumnIdentifiers(colName);
 
 
-            String blankID, blankType, status, destFrom, destTo, dateReceived, dateAssigned, employeeID;
+            String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
 
             while (rs.next()) {
                 blankID = rs.getString(1);
                 blankType = rs.getString(2);
                 status = rs.getString(3);
-                destFrom = rs.getString(4);
-                destTo = rs.getString(5);
-                dateReceived = rs.getString(6);
-                dateAssigned = rs.getString(7);
-                employeeID = rs.getString(8);
-                String[] row = {blankID, blankType, status, destFrom, destTo, dateReceived, dateAssigned, employeeID};
+                dateReceived = rs.getString(4);
+                dateAssigned = rs.getString(5);
+                employeeID = rs.getString(6);
+                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
                 if (Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1), rs.getInt(2)).equals("Sold")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
-                            rs.getDate(6),
-                            rs.getDate(7),
-                            rs.getInt(8)
+                            rs.getDate(4),
+                            rs.getDate(5),
+                            rs.getInt(6)
                     );
                     blank.setBlankID(rs.getInt(1));
                 } else {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
-                            rs.getDate(6)
+                            rs.getDate(4)
                     );
                     blank.setBlankID(rs.getInt(1));
                 }

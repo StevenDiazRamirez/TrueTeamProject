@@ -47,7 +47,7 @@ public class CustomerPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
-                    System.out.println("Missing fields, Please fill out all the required fields");
+                    JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
                 }
                 Customer newCustomer = new Customer(firstName.getText(), lastName.getText(),
@@ -60,12 +60,13 @@ public class CustomerPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
-                    System.out.println("Missing fields, Please fill out all the required fields");
+                    JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
                 }
                 Customer deleteCustomer = new Customer(firstName.getText(), lastName.getText(),
                         String.valueOf(type.getSelectedItem()), email.getText());
                 deleteCustomer.setCustomerID(Customer.getThisCustomerID(deleteCustomer));
+                System.out.println(deleteCustomer.getCustomerID());
                 Customer.deleteCustomerAccount(deleteCustomer);
                 deleteCustomer = null;
             }

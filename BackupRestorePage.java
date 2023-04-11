@@ -63,7 +63,7 @@ public class BackupRestorePage extends JFrame {
                 Process p = null;
                 try {
                     Runtime runtime = Runtime.getRuntime();
-                    p = runtime.exec("C:/Program Files/MySQL/MySQL Server 8.0/bin/mysqldump.exe -uroot -p8W3hMJoZ --add-drop-database -B ats -r" + filename1);
+                    p = runtime.exec("C:/Program Files/MySQL/MySQL Server 8.0/bin/mysqldump.exe -uroot --add-drop-database -B ats -r" + filename1);
                     int processComplete = p.waitFor();
                     if (processComplete == 0) {
                         JOptionPane.showMessageDialog(null, "Backup Created!");
@@ -96,7 +96,7 @@ public class BackupRestorePage extends JFrame {
         restoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] restoreCmd = new String[]{"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe","-uroot","-p8W3hMJoZ","-e","source " + filename2};
+                String[] restoreCmd = new String[]{"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe","-uroot","-e","source " + filename2};
                 Process process;
                 try {
                     process = Runtime.getRuntime().exec(restoreCmd);

@@ -1,6 +1,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.Date;
 
@@ -49,9 +50,10 @@ public class Blank {
         return null;
     }
 
-    public static void changeStatus(int blankID, int blankType, String status){
+    public static void changeStatusSold(int blankID, int blankType){
         try {
-            String searchBlank = "UPDATE blanks SET `status` = '"+status+"' WHERE `blankID` = "+ blankID+" AND blankType = "+ blankType;
+            String searchBlank = "UPDATE blanks SET status = 'Sold'" + " WHERE `blankID` = " + blankID
+                    + " AND blankType = " + blankType;
             PreparedStatement stm = con.prepareStatement(searchBlank);
             stm.executeUpdate();
 
@@ -223,6 +225,7 @@ public class Blank {
 
             ResultSet count = stm.executeQuery(amountOfBlanks);
             while(count.next()) {
+                System.out.println(count.getInt(1));
                 if (count.getInt(1) < amount) {
                     enoughBlanks = false;
                     //AlertWindow.showInformationAlert("Not enough blanks", "Please enter a lower amount, there are not enough blanks of type:"+type+"In the system");
@@ -254,7 +257,7 @@ public class Blank {
                             amount++;
                         }
                     }
-                   // AlertWindow.showInformationAlert("Success!","The blanks have been allocated");
+                    JOptionPane.showMessageDialog(null, "Blanks have been allocated");
                 }
             }else{
                 Blank blank = checkIfExists(blankID,type);
@@ -312,15 +315,11 @@ public class Blank {
 
     public static void deAllocate(Blank blank){
         try{
-
-
             String update = "UPDATE `blanks` SET `employeesIDBlanks` = NULL WHERE `blankID` = '"+blank.getBlankID()+"' AND `Type` = "+blank.getBlankType();
 
             PreparedStatement stm = con.prepareStatement(update);
 
             stm.executeUpdate(update);
-
-
 
         } catch (SQLException e) {
             e.printStackTrace();

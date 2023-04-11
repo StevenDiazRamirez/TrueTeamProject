@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,12 +24,16 @@ public class SalePage extends JFrame  {
     private JButton payLaterButton;
     private JTextField commissionField;
     private JButton getCommissionButton;
+    private JTextField taxes;
+    private JTextField cardDetails;
+    private JButton fixedDiscountButton;
+    private JButton flexibleDiscountButton;
     private JFrame saleFrame;
     private JPanel panel;
-    private JTextField latePayDate;
-    private Date lateDate;
 
-    private int blankID;
+    private Date lateDate;
+    private float fixedDiscount;
+    private float flexibleDiscount;
 
     public SalePage() {
         createSalePage();
@@ -50,6 +51,18 @@ public class SalePage extends JFrame  {
 
         getBlanks();
 
+        fixedDiscountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createFixedDiscountPanel();
+            }
+        });
+        flexibleDiscountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createFlexibleDiscountPanel();
+            }
+        });
         getCommissionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,30 +84,37 @@ public class SalePage extends JFrame  {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                blankID = getSelectedBlankID();
-                if (customerEmail.getText().isEmpty() && paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
-                    Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), blankID, Integer.parseInt(amount.getText()));
-                }
-                if (customerEmail.getText().isEmpty() && paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
+                int blankID = getSelectedBlankID();
+                int employeeID = MainPage.getProfile().getEmployeeID();
+                int customerID = getSelectedCustomerID();
+                int commissionID = getSelectedCommissionID();
 
-                }
-                if (customerEmail.getText().isEmpty() && paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
+                Blank.changeStatusSold(blankID, Integer.parseInt(blankType.getSelectedItem().toString()));
 
+                if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
+                    Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                            Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
                 }
-                if (customerEmail.getText().isEmpty() && paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
-
+                if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
+                    Sale.addNewCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                            Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, Integer.parseInt(cardDetails.getText()));
                 }
-
+                if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
+                    Sale.addNewCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                            Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
+                }
+                if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
+                    Sale.addNewCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                            Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID,
+                            Integer.parseInt(cardDetails.getText()));
+                }
             }
         });
         voidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //below will be used to get latePayDate for database
-                //java.sql.Date endDate2 = new java.sql.Date(lateDate.getTime());
-               // System.out.println(endDate2);
-                getCommissions();
-
+                System.out.println(fixedDiscount);
+                System.out.println(flexibleDiscount);
             }
         });
         backButton.addActionListener(new ActionListener() {
@@ -147,7 +167,7 @@ public class SalePage extends JFrame  {
     public void createLatePayPanel() {
         if (Sale.getCustomerType(customerEmail.getText()).equals("Regular") || Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
             panel = new JPanel();
-            latePayDate = new JTextField(5);
+            JTextField latePayDate = new JTextField(5);
             panel.add(latePayDate);
 
             int option = JOptionPane.showConfirmDialog(null, panel, "LatePayment", JOptionPane.OK_CANCEL_OPTION);
@@ -155,10 +175,35 @@ public class SalePage extends JFrame  {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     lateDate = dateFormat.parse(latePayDate.getText());
-                    System.out.println(lateDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+            }
+        } else JOptionPane.showMessageDialog(null, "Customer not allowed");
+    }
+
+    public void createFixedDiscountPanel() {
+        if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
+            panel = new JPanel();
+            JTextField discount = new JTextField(5);
+            panel.add(discount);
+
+            int option = JOptionPane.showConfirmDialog(null, panel, "Fixed Discount", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                fixedDiscount = Float.parseFloat(discount.getText());
+            }
+        } else JOptionPane.showMessageDialog(null, "Customer not allowed");
+    }
+
+    public void createFlexibleDiscountPanel() {
+        if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
+            panel = new JPanel();
+            JTextField discount = new JTextField(5);
+            panel.add(discount);
+
+            int option = JOptionPane.showConfirmDialog(null, panel, "Flexible Discount", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                flexibleDiscount = Float.parseFloat(discount.getText());
             }
         } else JOptionPane.showMessageDialog(null, "Customer not allowed");
     }
@@ -196,6 +241,23 @@ public class SalePage extends JFrame  {
         }
     }
 
+    public int getSelectedCommissionID() {
+        try {
+            Connection con = DBSConnection.getConnection();
+            Statement stm = con.createStatement();
+            String query = "SELECT CommissionID FROM ats.commission WHERE amount = " +
+                    Integer.parseInt(commissionField.getText()) + " AND blankType = " + blankType.getSelectedItem();
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public int getSelectedBlankID() {
         try {
             Connection con = DBSConnection.getConnection();
@@ -213,4 +275,19 @@ public class SalePage extends JFrame  {
         return -1;
     }
 
+    public int getSelectedCustomerID() {
+        try {
+            Connection con = DBSConnection.getConnection();
+            String query = "SELECT CustomerID from customeraccount WHERE CustomerEmail = " + "'" + customerEmail.getText() + "'";
+            PreparedStatement stm = con.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  -1;
+    }
 }

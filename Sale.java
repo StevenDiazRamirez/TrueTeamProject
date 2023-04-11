@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +46,7 @@ public class Sale {
         this.cardNumber = cardNumber;
     }
 
-    public static void addNewCashSaleDomestic(int blankType, int blankID, float amount) {
+    public static void addNewCashSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -61,12 +62,135 @@ public class Sale {
 
             java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
 
-            //if customer in new (no late pay or discount)
-            String addQuery = "INSERT INTO sale (`SaleID`, `blankType`, `blanksID`, `PaymentType`, `flightType`, `PaymentAmount`, " +
-                    "`saleDate`) VALUES ('" + highestSale + "', '" + blankType + "', '" + blankID +
-                    "', '" + "CASH" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate + "');";
+            if (!(latePaymentDate == null)) {
+                java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
+                String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CASH" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
+                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "');";
+                highestSaleID.executeUpdate(addQuery);
+            } else {
+                String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CASH" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
+                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "');";
+                highestSaleID.executeUpdate(addQuery2);
+            }
+            JOptionPane.showMessageDialog(null, "Sale Created");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addNewCardSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, int cardDetails) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT MAX(SaleID) FROM sale";
+            PreparedStatement highestSaleID = con.prepareStatement(searchQuery);
 
 
+            ResultSet rs = highestSaleID.executeQuery(searchQuery);
+            int highestSale = 1;
+            while (rs.next()) {
+                highestSale = rs.getInt(1) + 1;
+            }
+
+            java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
+
+            if (!(latePaymentDate == null)) {
+                java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
+                String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CARD" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
+                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+
+                highestSaleID.executeUpdate(addQuery);
+            } else {
+                String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CARD" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
+                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+
+                highestSaleID.executeUpdate(addQuery2);
+            }
+            JOptionPane.showMessageDialog(null, "Sale Created");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addNewCashSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT MAX(SaleID) FROM sale";
+            PreparedStatement highestSaleID = con.prepareStatement(searchQuery);
+
+
+            ResultSet rs = highestSaleID.executeQuery(searchQuery);
+            int highestSale = 1;
+            while (rs.next()) {
+                highestSale = rs.getInt(1) + 1;
+            }
+
+            java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
+
+            if (!(latePaymentDate == null)) {
+                java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
+                String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`exchangeRate`, `saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CASH" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
+                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "');";
+
+                highestSaleID.executeUpdate(addQuery);
+            } else {
+                String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`exchangeRate`, `saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CASH" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
+                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "');";
+
+                highestSaleID.executeUpdate(addQuery2);
+            }
+            JOptionPane.showMessageDialog(null, "Sale Created");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addNewCardSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, int cardDetails) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String searchQuery = "SELECT MAX(SaleID) FROM sale";
+            PreparedStatement highestSaleID = con.prepareStatement(searchQuery);
+
+
+            ResultSet rs = highestSaleID.executeQuery(searchQuery);
+            int highestSale = 1;
+            while (rs.next()) {
+                highestSale = rs.getInt(1) + 1;
+            }
+
+            java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
+
+            if (!(latePaymentDate == null)) {
+                java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
+                String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`exchangeRate`, `saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CARD" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
+                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+
+                highestSaleID.executeUpdate(addQuery);
+            } else {
+                String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
+                        "`exchangeRate`, `saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
+                        "', '" + blankType + "', '" + "CARD" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
+                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+
+                highestSaleID.executeUpdate(addQuery2);
+            }
+            JOptionPane.showMessageDialog(null, "Sale Created");
         } catch (SQLException e) {
             e.printStackTrace();
         }

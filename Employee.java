@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 import java.util.Date;
 
@@ -57,13 +58,13 @@ public class Employee {
 
         public static void addEmployeeAccount(Employee employee) {
             try {
-                String query = "INSERT INTO employeeaccount (`EmployeeID`, 'FirstName', 'LastName', `Username`, `Password`," +
+                String query = "INSERT INTO employeeaccount (`EmployeeID`, `FirstName`, `LastName`, `Username`, `Password`," +
                         "`AccountType`) VALUES ('" + employee.getEmployeeID() + "', '" + employee.getFirstname() + "', '" +
                         employee.getLastname() + "', '" + employee.getUsername() + "', '" + employee.getPassword() + "', '" + employee.getRole() + "');";
 
                 PreparedStatement stm = con.prepareStatement(query);
                 stm.executeUpdate();
-                System.out.println("Added!");
+                JOptionPane.showMessageDialog(null, "Added Account!");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
