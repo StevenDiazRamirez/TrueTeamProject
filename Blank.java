@@ -45,9 +45,9 @@ public class Blank {
         return null;
     }
 
-    public static void changeStatusSold(int blankID, int blankType){
+    public static void changeStatus(int blankID, int blankType, String status){
         try {
-            String searchBlank = "UPDATE blanks SET status = 'Sold'" + " WHERE `blankID` = " + blankID
+            String searchBlank = "UPDATE blanks SET status = " + "'" + status + "'" + " WHERE `blankID` = " + blankID
                     + " AND blankType = " + blankType;
             PreparedStatement stm = con.prepareStatement(searchBlank);
             stm.executeUpdate();
@@ -119,11 +119,9 @@ public class Blank {
 
             ResultSet count = stm.executeQuery(amountOfBlanks);
             while(count.next()) {
-                System.out.println(count.getInt(1));
                 if (count.getInt(1) < amount) {
                     enoughBlanks = false;
-                    //AlertWindow.showInformationAlert("Not enough blanks", "Please enter a lower amount, there are not enough blanks of type:"+type+"In the system");
-                    System.out.println("not enough blanks!");
+                    JOptionPane.showMessageDialog(null, "Not enough blanks, enter a lower amount");
                     return;
                 } else {
                     enoughBlanks = true;
@@ -177,34 +175,6 @@ public class Blank {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static boolean deleteBlank(Blank blank){
-        try{
-
-            String delete = "DELETE FROM `ats`.`blanks` WHERE `blankID` = '"+blank.getBlankID()+"' AND `Type` = "+blank.getBlankType() ;
-
-            PreparedStatement stm = con.prepareStatement(delete);
-
-          /*  if(blank.getStatus().equals("Refunded")||blank.getStatus().equals("Void")){
-                stm.executeUpdate();
-            }else if(blank.getStatus().equals("Sold")){
-                AlertWindow.showInformationAlert("Wrong blank status","To delete a sold blank, you must first void it or refund it.");
-            }else{
-                stm.executeUpdate();
-            }*/
-            if(blank.getStatus().equals("Received")||blank.getStatus().equals("Allocated")){
-                stm.executeUpdate();
-            }else{
-                //AlertWindow.showInformationAlert("Wrong blank status","You can only delete blanks from the system if they were not used");
-                return false;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-        // AlertWindow.showInformationAlert("Success!", "Blank successfully delete");
     }
 
         public int getBlankID() {

@@ -36,9 +36,11 @@ public class CommissionPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCommissionPage addCommissionPage = new AddCommissionPage();
-                addCommissionPage.setVisible(false);
-                commissionFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Admin") || MainPage.getProfile().getRole().equals("Manager")) {
+                    AddCommissionPage addCommissionPage = new AddCommissionPage();
+                    addCommissionPage.setVisible(false);
+                    commissionFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         viewButton.addActionListener(new ActionListener() {

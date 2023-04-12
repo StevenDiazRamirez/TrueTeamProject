@@ -31,41 +31,51 @@ public class ReportPage extends JFrame {
         stockTurnoverReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StockTurnoverReportPage stockTurnoverReportPage = new StockTurnoverReportPage();
-                stockTurnoverReportPage.setVisible(false);
-                reportFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Admin") || MainPage.getProfile().getRole().equals("Manager")) {
+                    StockTurnoverReportPage stockTurnoverReportPage = new StockTurnoverReportPage();
+                    stockTurnoverReportPage.setVisible(false);
+                    reportFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         individualInterlineReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IndividualInterlineReportPage individualInterlineReportPage = new IndividualInterlineReportPage();
-                individualInterlineReportPage.setVisible(false);
-                reportFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Travel Advisor") || MainPage.getProfile().getRole().equals("Manager")) {
+                    IndividualInterlineReportPage individualInterlineReportPage = new IndividualInterlineReportPage();
+                    individualInterlineReportPage.setVisible(false);
+                    reportFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         interlineReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InterlineReportPage interlineReportPage = new InterlineReportPage();
-                interlineReportPage.setVisible(false);
-                reportFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Manager")) {
+                    InterlineReportPage interlineReportPage = new InterlineReportPage();
+                    interlineReportPage.setVisible(false);
+                    reportFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         individualDomesticReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IndividualDomesticReportPage individualDomesticReportPage = new IndividualDomesticReportPage();
-                individualDomesticReportPage.setVisible(false);
-                reportFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Travel Advisor") || MainPage.getProfile().getRole().equals("Manager")) {
+                    IndividualDomesticReportPage individualDomesticReportPage = new IndividualDomesticReportPage();
+                    individualDomesticReportPage.setVisible(false);
+                    reportFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         domesticReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DomesticReportPage domesticReportPage = new DomesticReportPage();
-                domesticReportPage.setVisible(false);
-                reportFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Manager")) {
+                    DomesticReportPage domesticReportPage = new DomesticReportPage();
+                    domesticReportPage.setVisible(false);
+                    reportFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         backButton.addActionListener(new ActionListener() {

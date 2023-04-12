@@ -89,7 +89,7 @@ public class SalePage extends JFrame  {
 
                 if (allFieldsFilled) {
 
-                    Blank.changeStatusSold(blankID, Integer.parseInt(blankType.getSelectedItem().toString()));
+                    Blank.changeStatus(blankID, Integer.parseInt(blankType.getSelectedItem().toString()), "Sold");
 
                     if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
                         Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),

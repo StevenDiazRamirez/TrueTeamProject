@@ -47,7 +47,7 @@ public class OrderBlanksPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Blank.orderBlanks(Integer.parseInt(amountField.getText()), Integer.parseInt(comboBox1.getSelectedItem().toString()));
-                System.out.println("DONE!");
+                JOptionPane.showMessageDialog(null, "Done!");
             }
         });
 

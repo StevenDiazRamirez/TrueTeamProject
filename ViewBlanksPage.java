@@ -1,6 +1,7 @@
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ public class ViewBlanksPage extends JFrame {
     private JButton mainMenuButton;
     private JTextField employeeField;
     private JButton reallocateButton;
+    private JButton reportButton;
     private JFrame viewBlankFrame;
 
     public ViewBlanksPage() {
@@ -30,7 +32,6 @@ public class ViewBlanksPage extends JFrame {
         viewBlankFrame.pack();
         viewBlankFrame.setLocationRelativeTo(null);
         viewBlankFrame.setVisible(true);
-
 
         if (MainPage.getProfile().getRole().equals("Travel Advisor")) {
             getBlankInfoSingle();
@@ -64,36 +65,45 @@ public class ViewBlanksPage extends JFrame {
                 employeeField.setText(model.getValueAt(selectedRow,5).toString());
             }
         });
-        reallocateButton.addActionListener(new ActionListener() {
+        reportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int i = blankTable.getSelectedRow();
-                if (blankTable.getValueAt(i, 2).toString().equals("Assigned")) {
-                    if (!MainPage.getProfile().getRole().equals("Manager")) {
-                        System.out.println("Wrong role, only Manager allowed");
+                String blankID = blankTable.getValueAt(i, 0).toString();
+                String blankType = blankTable.getValueAt(i, 1).toString();
+                Blank.changeStatus(Integer.parseInt(blankID), Integer.parseInt(blankType), "Lost/Stolen");
+                JOptionPane.showMessageDialog(null, "Blank has been reported");
+            }
+        });
+        reallocateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    int i = blankTable.getSelectedRow();
+                    if (blankTable.getValueAt(i, 2).toString().equals("Assigned")) {
+                        if (!MainPage.getProfile().getRole().equals("Manager")) {
+                            JOptionPane.showMessageDialog(null, "Only Manager allowed");
+                        } else {
+                            String blankID = blankTable.getValueAt(i, 0).toString();
+                            DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
+                            if (i >= 0)
+                                model.setValueAt(employeeField.getText(), i, 5);
 
-                    } else {
-                        String blankID = blankTable.getValueAt(i, 0).toString();
-                        DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
-                        if (i >= 0)
-                            model.setValueAt(employeeField.getText(), i, 5);
+                            int newID = Integer.parseInt(employeeField.getText());
 
-                        int newID = Integer.parseInt(employeeField.getText());
-
-                        try {
-                            Connection con = DBSConnection.getConnection();
-                            PreparedStatement stm = con.prepareStatement("UPDATE blanks SET employeeID = " + newID + " WHERE blankID = " + Integer.parseInt(blankID));
-                            stm.executeUpdate();
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                            try {
+                                Connection con = DBSConnection.getConnection();
+                                PreparedStatement stm = con.prepareStatement("UPDATE blanks SET employeeID = " + newID + " WHERE blankID = " + Integer.parseInt(blankID));
+                                stm.executeUpdate();
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
                         }
-                    }
-                } else System.out.println("Wrong blank status");
+                    } else JOptionPane.showMessageDialog(null, "Wrong Blank status");
             }
         });
     }
 
-    public void getBlankInfoSingle() {
+    private void getBlankInfoSingle() {
         try {
 
             Connection con = DBSConnection.getConnection();
@@ -110,6 +120,9 @@ public class ViewBlanksPage extends JFrame {
             }
             model.setColumnIdentifiers(colName);
 
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel> (model);
+            blankTable.setRowSorter(sorter);
+
             String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
 
             while (rs.next()) {
@@ -122,7 +135,8 @@ public class ViewBlanksPage extends JFrame {
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
-                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")) {
+                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")
+                        || Blank.checkBlankStatus(rs.getInt(1)).equals("Refunded")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
                             rs.getDate(4),
@@ -144,7 +158,7 @@ public class ViewBlanksPage extends JFrame {
         }
     }
 
-    public void getBlankInfoAll() {
+    private void getBlankInfoAll() {
         try {
 
             Connection con = DBSConnection.getConnection();
@@ -161,6 +175,8 @@ public class ViewBlanksPage extends JFrame {
             }
             model.setColumnIdentifiers(colName);
 
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel> (model);
+            blankTable.setRowSorter(sorter);
 
             String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
 
@@ -174,7 +190,8 @@ public class ViewBlanksPage extends JFrame {
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
 
-                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")) {
+                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")
+                        || Blank.checkBlankStatus(rs.getInt(1)).equals("Refunded")) {
                     Blank blank = new Blank(rs.getInt(2),
                             rs.getString(3),
                             rs.getDate(4),

@@ -57,12 +57,12 @@ public class CustomerPage extends JFrame {
                             FixedDiscount.addFixedDiscount(fixedDiscount);
                         }
                         if (discountType.getSelectedItem().equals("Flexible")) {
-                            System.out.println("test");
                             FlexibleDiscount flexibleDiscount = new FlexibleDiscount(0, 15, Float.parseFloat(discountAmount.getText()), discount.getDiscountID());
                             flexibleDiscount.setFlexibleID(FlexibleDiscount.getLatestFlexibleDiscountID() + 1);
                             FlexibleDiscount.addFlexibleDiscount(flexibleDiscount);
                         }
                     }
+                    JOptionPane.showMessageDialog(null, "Added!");
                 }
             }
         });
@@ -77,6 +77,7 @@ public class CustomerPage extends JFrame {
                         String.valueOf(type.getSelectedItem()), email.getText());
                 newCustomer.setCustomerID(Customer.getThisCustomerID(newCustomer));
                 Customer.updateCustomerAccount(newCustomer);
+                JOptionPane.showMessageDialog(null, "Updated");
             }
         });
         deleteButton.addActionListener(new ActionListener() {
@@ -89,9 +90,9 @@ public class CustomerPage extends JFrame {
                 Customer deleteCustomer = new Customer(firstName.getText(), lastName.getText(),
                         String.valueOf(type.getSelectedItem()), email.getText());
                 deleteCustomer.setCustomerID(Customer.getThisCustomerID(deleteCustomer));
-                System.out.println(deleteCustomer.getCustomerID());
                 Customer.deleteCustomerAccount(deleteCustomer);
                 deleteCustomer = null;
+                JOptionPane.showMessageDialog(null, "Deleted");
             }
         });
         backButton.addActionListener(new ActionListener() {

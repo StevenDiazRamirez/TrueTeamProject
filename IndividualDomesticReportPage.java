@@ -63,8 +63,6 @@ public class IndividualDomesticReportPage extends JFrame {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //createReport();
-
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     startDate = dateFormat.parse(textField1.getText());
@@ -72,12 +70,21 @@ public class IndividualDomesticReportPage extends JFrame {
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-                getDocumentInformation(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                getCashInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                getCardInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                getTotalPaid(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                getCommissionInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                getTotalCommission(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                if (MainPage.getProfile().getRole() == "Manager") {
+                    getDocumentInformation(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                    getCashInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                    getCardInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                    getTotalPaid(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                    getCommissionInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                    getTotalCommission(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
+                } else if (MainPage.getProfile().getRole() == "Travel Advisor") {
+                    getDocumentInformation(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                    getCashInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                    getCardInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                    getTotalPaid(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                    getCommissionInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                    getTotalCommission(MainPage.getProfile().getEmployeeID(), startDate, endDate);
+                }
             }
         });
     }

@@ -36,7 +36,6 @@ public class LoginPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Employee.login(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()))) {
                     Employee employee = LoginPage.loggedInProfile(usernameTextField.getText(), String.valueOf(passwordField1.getPassword()));
-                    System.out.println(usernameTextField.getText());
                     MainPage mainPage = new MainPage();
                     mainPage.setVisible(false);
                     mainPage.createMainPage(employee);

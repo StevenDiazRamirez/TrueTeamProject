@@ -44,9 +44,7 @@ public class AddCommissionPage extends JFrame {
                     }
                     Commission.addCommission(Float.parseFloat(amountField.getText()), Integer.parseInt(comboBox1.getSelectedItem().toString()), endDate);
                     JOptionPane.showMessageDialog(null, "Commission added!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Missing details, Please fill out all the required fields");
-                }
+                } else JOptionPane.showMessageDialog(null, "Missing details, Please fill out all the required fields");
             }
         });
         backButton.addActionListener(new ActionListener() {

@@ -8,7 +8,6 @@ public class BlankPage extends JFrame {
     private JButton viewBlanksButton;
     private JButton orderBlanksButton;
     private JButton allocateButton;
-    private JButton reportBlanksButton;
     private JButton backButton;
     private JFrame blankFrame;
 
@@ -32,30 +31,27 @@ public class BlankPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ViewBlanksPage viewBlanksPage = new ViewBlanksPage();
                 viewBlanksPage.setVisible(false);
-                System.out.println(MainPage.getProfile().getRole());
                 blankFrame.dispose();
             }
         });
         orderBlanksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OrderBlanksPage orderBlanksPage = new OrderBlanksPage();
-                orderBlanksPage.setVisible(false);
-                blankFrame.dispose();
+                if (MainPage.getProfile().getRole().equals("Admin")) {
+                    OrderBlanksPage orderBlanksPage = new OrderBlanksPage();
+                    orderBlanksPage.setVisible(false);
+                    blankFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         allocateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AllocateBlanksPage allocateBlanksPage = new AllocateBlanksPage();
-                allocateBlanksPage.setVisible(false);
-                blankFrame.dispose();
-            }
-        });
-        reportBlanksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+                if (MainPage.getProfile().getRole().equals("Manager")) {
+                    AllocateBlanksPage allocateBlanksPage = new AllocateBlanksPage();
+                    allocateBlanksPage.setVisible(false);
+                    blankFrame.dispose();
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
         backButton.addActionListener(new ActionListener() {

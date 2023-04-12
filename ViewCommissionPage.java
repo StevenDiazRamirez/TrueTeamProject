@@ -51,17 +51,19 @@ public class ViewCommissionPage extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int i = commissionTable.getSelectedRow();
-                String commissionID = commissionTable.getValueAt(i,0).toString();
+                if (MainPage.getProfile().getRole().equals("Admin") || MainPage.getProfile().getRole().equals("Manager")) {
+                    int i = commissionTable.getSelectedRow();
+                    String commissionID = commissionTable.getValueAt(i, 0).toString();
 
-                try {
-                    Connection con = DBSConnection.getConnection();
-                    PreparedStatement stm = con.prepareStatement("DELETE FROM commission WHERE CommissionID = " + commissionID);
-                    stm.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Deleted!");
-                } catch (SQLException throwables) {
-                    JOptionPane.showMessageDialog(null, throwables);
-                }
+                    try {
+                        Connection con = DBSConnection.getConnection();
+                        PreparedStatement stm = con.prepareStatement("DELETE FROM commission WHERE CommissionID = " + commissionID);
+                        stm.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Deleted!");
+                    } catch (SQLException throwables) {
+                        JOptionPane.showMessageDialog(null, throwables);
+                    }
+                } else JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
             }
         });
     }
