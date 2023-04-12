@@ -110,7 +110,6 @@ public class ViewBlanksPage extends JFrame {
             }
             model.setColumnIdentifiers(colName);
 
-
             String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
 
             while (rs.next()) {
