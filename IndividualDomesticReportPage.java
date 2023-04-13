@@ -70,14 +70,14 @@ public class IndividualDomesticReportPage extends JFrame {
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-                if (MainPage.getProfile().getRole() == "Manager") {
+                if (MainPage.getProfile().getRole().equals("Manager")) {
                     getDocumentInformation(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getCashInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getCardInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getTotalPaid(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getCommissionInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getTotalCommission(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
-                } else if (MainPage.getProfile().getRole() == "Travel Advisor") {
+                } else if (MainPage.getProfile().getRole().equals("Travel Advisor")) {
                     getDocumentInformation(MainPage.getProfile().getEmployeeID(), startDate, endDate);
                     getCashInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
                     getCardInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
@@ -105,12 +105,6 @@ public class IndividualDomesticReportPage extends JFrame {
         }
     }
 
-    public static void createReport(int employeeID, Date startDate, Date endDate) {
-        JFrame report = new JFrame("Individual Domestic Report");
-        report.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-    }
-
     public void getDocumentInformation(int employeeID, java.util.Date startDate, java.util.Date endDate) {
         try {
             java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
@@ -124,6 +118,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND s.exchangeRate IS NULL\n" +
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();
@@ -146,6 +141,7 @@ public class IndividualDomesticReportPage extends JFrame {
                 price = rs.getString(3);
                 taxes = rs.getString(4);
                 priceAndTaxes= rs.getString(5);
+
                 String[] row = {blankType, blankID, price, taxes, priceAndTaxes};
                 model.addRow(row);
             }
@@ -168,6 +164,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
                     "AND s.PaymentType = 'CASH'\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();
@@ -208,6 +205,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
                     "AND s.PaymentType = 'CARD'\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();
@@ -248,6 +246,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND s.exchangeRate IS NULL\n" +
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();
@@ -287,6 +286,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND b.blankID = s.blankIDSale\n" +
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();
@@ -328,6 +328,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     "AND b.blankID = s.blankIDSale\n" +
                     "AND (b.Status = 'Sold')\n" +
                     "AND b.blankType = s.blankTypeSale\n" +
+                    "AND (s.latePaymentStatus != 'Failed To Pay' or s.latePaymentStatus is null)" +
                     "AND s.employeeIDSale = " + employeeID;
 
             Statement stm = con.createStatement();

@@ -2,13 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 public class AllocateBlanksPage extends JFrame {
     private JPanel allocateBlankPanel;
     private JComboBox comboBox1;
     private JTextField amountField;
-    private JTextField employeeIDFIeld;
+    private JTextField employeeUsername;
     private JButton allocateButton;
     private JButton backButton;
     private JButton mainMenuButton;
@@ -48,7 +47,8 @@ public class AllocateBlanksPage extends JFrame {
         allocateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Blank.allocateBlank(Integer.parseInt(comboBox1.getSelectedItem().toString()), Integer.parseInt(amountField.getText()), Integer.parseInt(employeeIDFIeld.getText()), 0);
+                int employeeID = Employee.getThisEmployeeID(employeeUsername.getText());
+                Blank.allocateBlank(Integer.parseInt(comboBox1.getSelectedItem().toString()), Integer.parseInt(amountField.getText()), employeeID, 0);
             }
         });
     }

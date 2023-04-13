@@ -56,6 +56,21 @@ public class Employee {
             return  -1;
         }
 
+    public static int getThisEmployeeID(String username) {
+        try{
+            String query = "SELECT EmployeeID from employeeaccount WHERE Username = " + "'" + username + "'";
+            PreparedStatement stm = con.prepareStatement(query);
+            ResultSet rs =stm.executeQuery();
+
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  -1;
+    }
+
         public static void addEmployeeAccount(Employee employee) {
             try {
                 String query = "INSERT INTO employeeaccount (`EmployeeID`, `FirstName`, `LastName`, `Username`, `Password`," +

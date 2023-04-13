@@ -28,12 +28,13 @@ public class Blank {
 
     private static Connection con = DBSConnection.getConnection();
 
-    public static String checkBlankStatus(int blankID) {
+    public static String checkBlankStatus(int blankID, int blankType) {
         try {
 
             Statement stm = con.createStatement();
 
-            String searchStatement = "SELECT status FROM blanks WHERE blankID = " + blankID;
+            String searchStatement = "SELECT status FROM blanks WHERE blankID = " + blankID +
+                    " AND blankType = " + blankType;
 
             ResultSet rs = stm.executeQuery(searchStatement);
             while (rs.next()) {
@@ -61,7 +62,7 @@ public class Blank {
         try {
             Connection con = DBSConnection.getConnection();
 
-            String searchQuery = "SELECT MAX(BlankID) FROM blanks";
+            String searchQuery = "SELECT MAX(BlankID) FROM blanks WHERE blankType = " + type;
             PreparedStatement highestblankID = con.prepareStatement(searchQuery);
 
 
@@ -175,6 +176,19 @@ public class Blank {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean deleteBlank(int blankID , int blankType){
+        try{
+            String delete = "DELETE FROM `ats`.`blanks` WHERE `blankID` = '"+ blankID +"' AND `blankType` = "+ blankType;
+            PreparedStatement stm = con.prepareStatement(delete);
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(null, "Blank has been returned");
+        return true;
     }
 
         public int getBlankID() {

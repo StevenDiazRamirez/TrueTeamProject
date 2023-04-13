@@ -196,7 +196,22 @@ public class Sale {
         }
     }
 
-    public static String getCustomerType(String customerEmail) {
+    public static void addLatePayStatus(String latePaymentStatus, int saleID) {
+        try {
+            Connection con = DBSConnection.getConnection();
+
+            String query = "UPDATE sale SET latePaymentStatus = " + '"' + latePaymentStatus + '"' + " WHERE saleID = "
+                    + saleID;
+
+            PreparedStatement addStatus = con.prepareStatement(query);
+            addStatus.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Updated status");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+        public static String getCustomerType(String customerEmail) {
         try {
             Connection con = DBSConnection.getConnection();
 

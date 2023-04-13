@@ -17,6 +17,7 @@ public class ViewBlanksPage extends JFrame {
     private JTextField employeeField;
     private JButton reallocateButton;
     private JButton reportButton;
+    private JButton returnButton;
     private JFrame viewBlankFrame;
 
     public ViewBlanksPage() {
@@ -75,6 +76,22 @@ public class ViewBlanksPage extends JFrame {
                 JOptionPane.showMessageDialog(null, "Blank has been reported");
             }
         });
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (MainPage.getProfile().getRole().equals("Travel Advisor")) {
+                    JOptionPane.showMessageDialog(null, "No access,You don't have access to this function");
+                } else {
+                    int i = blankTable.getSelectedRow();
+                    String blankID = blankTable.getValueAt(i, 0).toString();
+                    String blankType = blankTable.getValueAt(i, 1).toString();
+                    String blankStatus = Blank.checkBlankStatus(Integer.parseInt(blankID), Integer.parseInt(blankType));
+                    if (blankStatus.equals("Assigned") || blankStatus.equals("Received")) {
+                        Blank.deleteBlank(Integer.parseInt(blankID), Integer.parseInt(blankType));
+                    }
+                }
+            }
+        });
         reallocateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,7 +122,6 @@ public class ViewBlanksPage extends JFrame {
 
     private void getBlankInfoSingle() {
         try {
-
             Connection con = DBSConnection.getConnection();
 
             Statement stm = con.createStatement();
@@ -134,25 +150,7 @@ public class ViewBlanksPage extends JFrame {
                 employeeID = rs.getString(6);
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
-
-                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")
-                        || Blank.checkBlankStatus(rs.getInt(1)).equals("Refunded")) {
-                    Blank blank = new Blank(rs.getInt(2),
-                            rs.getString(3),
-                            rs.getDate(4),
-                            rs.getDate(5),
-                            rs.getInt(6)
-                    );
-                    blank.setBlankID(rs.getInt(1));
-                } else {
-                    Blank blank = new Blank(rs.getInt(2),
-                            rs.getString(3),
-                            rs.getDate(4)
-                    );
-                    blank.setBlankID(rs.getInt(1));
-                }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,7 +158,6 @@ public class ViewBlanksPage extends JFrame {
 
     private void getBlankInfoAll() {
         try {
-
             Connection con = DBSConnection.getConnection();
 
             Statement stm = con.createStatement();
@@ -189,23 +186,6 @@ public class ViewBlanksPage extends JFrame {
                 employeeID = rs.getString(6);
                 String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
                 model.addRow(row);
-
-                if (Blank.checkBlankStatus(rs.getInt(1)).equals("Assigned") || Blank.checkBlankStatus(rs.getInt(1)).equals("Sold")
-                        || Blank.checkBlankStatus(rs.getInt(1)).equals("Refunded")) {
-                    Blank blank = new Blank(rs.getInt(2),
-                            rs.getString(3),
-                            rs.getDate(4),
-                            rs.getDate(5),
-                            rs.getInt(6)
-                    );
-                    blank.setBlankID(rs.getInt(1));
-                } else {
-                    Blank blank = new Blank(rs.getInt(2),
-                            rs.getString(3),
-                            rs.getDate(4)
-                    );
-                    blank.setBlankID(rs.getInt(1));
-                }
             }
 
         } catch (SQLException e) {
