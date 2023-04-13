@@ -101,6 +101,7 @@ public class ViewBlanksPage extends JFrame {
                             JOptionPane.showMessageDialog(null, "Only Manager allowed");
                         } else {
                             String blankID = blankTable.getValueAt(i, 0).toString();
+                            String blankType = blankTable.getValueAt(i, 1).toString();
                             DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
                             if (i >= 0)
                                 model.setValueAt(employeeField.getText(), i, 5);
@@ -109,8 +110,10 @@ public class ViewBlanksPage extends JFrame {
 
                             try {
                                 Connection con = DBSConnection.getConnection();
-                                PreparedStatement stm = con.prepareStatement("UPDATE blanks SET employeeID = " + newID + " WHERE blankID = " + Integer.parseInt(blankID));
+                                PreparedStatement stm = con.prepareStatement("UPDATE blanks SET employeeIDBlank = " + newID + " WHERE blankID = " + Integer.parseInt(blankID) +
+                                        " AND blankType = " + Integer.parseInt(blankType));
                                 stm.executeUpdate();
+                                JOptionPane.showMessageDialog(null, "Re-allocated");
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }

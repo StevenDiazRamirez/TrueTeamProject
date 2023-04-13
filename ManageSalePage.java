@@ -22,7 +22,6 @@ public class ManageSalePage extends JFrame {
     public void createRefundPage() {
         refundFrame = new JFrame("Innovotype");
         refundFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        refundFrame.setPreferredSize(new Dimension(500,500));
 
         refundFrame.add(refundPanel);
         refundFrame.pack();
@@ -65,8 +64,8 @@ public class ManageSalePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int i = refundTable.getSelectedRow();
-                String blankID = refundTable.getValueAt(i, 8).toString();
-                String blankType = refundTable.getValueAt(i, 1).toString();
+                String blankID = refundTable.getValueAt(i, 9).toString();
+                String blankType = refundTable.getValueAt(i, 2).toString();
 
                 try {
                     Connection con = DBSConnection.getConnection();
@@ -95,8 +94,8 @@ public class ManageSalePage extends JFrame {
             Connection con = DBSConnection.getConnection();
 
             Statement stm = con.createStatement();
-            String query = "SELECT saleID, blankTypeSale, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus," +
-                    " cardDetails, b.blankID FROM sale s, blanks b WHERE s.blankIDSale = b.blankID AND s.blankTypeSale = b.blankType AND b.status = 'Sold'";
+            String query = "SELECT saleID, b.status, blankTypeSale, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus," +
+                    " cardDetails, b.blankID FROM sale s, blanks b WHERE s.blankIDSale = b.blankID AND s.blankTypeSale = b.blankType AND b.status = ('Sold' or 'Refunded')";
             ResultSet rs = stm.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();
             DefaultTableModel model = (DefaultTableModel) refundTable.getModel();
@@ -108,20 +107,21 @@ public class ManageSalePage extends JFrame {
             }
             model.setColumnIdentifiers(colName);
 
-            String saleID, blankType, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus, cardDetails, blankID;
+            String saleID, status, blankType, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus, cardDetails, blankID;
 
             while (rs.next()) {
                 saleID = rs.getString(1);
-                blankType = rs.getString(2);
-                PaymentType = rs.getString(3);
-                PaymentAmount = rs.getString(4);
-                saleDate = rs.getString(5);
-                latePaymentDate = rs.getString(6);
-                latePaymentStatus = rs.getString(7);
-                cardDetails = rs.getString(8);
-                blankID = rs.getString(9);
+                status = rs.getString(2);
+                blankType = rs.getString(3);
+                PaymentType = rs.getString(4);
+                PaymentAmount = rs.getString(5);
+                saleDate = rs.getString(6);
+                latePaymentDate = rs.getString(7);
+                latePaymentStatus = rs.getString(8);
+                cardDetails = rs.getString(9);
+                blankID = rs.getString(10);
 
-                String[] row = {saleID, blankType, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus, cardDetails, blankID};
+                String[] row = {saleID, status, blankType, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus, cardDetails, blankID};
                 model.addRow(row);
             }
         } catch (SQLException e) {

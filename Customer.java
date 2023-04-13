@@ -72,7 +72,7 @@ public class Customer {
 
     public static void deleteCustomerAccount(Customer customer) {
         try{
-            String statement = "DELETE FROM customeraccount WHERE CustomerID = "+customer.getCustomerID();
+            String statement = "DELETE FROM customeraccount WHERE CustomerID = "+ customer.getCustomerID();
             PreparedStatement stm = con.prepareStatement(statement);
             stm.executeUpdate();
             JOptionPane.showMessageDialog(null,"Deleted!");
