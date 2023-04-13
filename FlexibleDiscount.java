@@ -21,6 +21,10 @@ public class FlexibleDiscount extends Discount{
 
     }
 
+    /**
+     * Adds the flexible discount to the database
+     * @param flexibleDiscount
+     */
     public static void addFlexibleDiscount(FlexibleDiscount flexibleDiscount) {
         try {
             String query = "INSERT INTO flexiblediscount (flexibleID, `flexibleDiscountID`, `discountAmount`) VALUES " +
@@ -34,6 +38,10 @@ public class FlexibleDiscount extends Discount{
         }
     }
 
+    /**
+     * Gets the highest flexible discount ID from the database
+     * @return
+     */
     public static int getLatestFlexibleDiscountID() {
         try{
             String query = "SELECT MAX(flexibleID) from flexiblediscount";

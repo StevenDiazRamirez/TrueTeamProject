@@ -12,12 +12,14 @@ public class Blank {
     private Date receiveDate;
     private Date assignedDate;
 
+    //Used for newly received blanks that have been ordered
     public Blank(int blankType, String status, Date receiveDate) {
         this.status = status;
         this.blankType = blankType;
         this.receiveDate = receiveDate;
     }
 
+    //used for blanks that have been allocated
     public Blank(int blankType, String status, Date receiveDate, Date assignedDate, int employeeID) {
         this.status = status;
         this.blankType = blankType;
@@ -28,6 +30,14 @@ public class Blank {
 
     private static Connection con = DBSConnection.getConnection();
 
+
+    /**
+     * Gets the blank status from the sql database where blankID and blankType is
+     * equal the parameters.
+     * @param blankID
+     * @param blankType
+     * @return
+     */
     public static String checkBlankStatus(int blankID, int blankType) {
         try {
 
@@ -46,6 +56,13 @@ public class Blank {
         return null;
     }
 
+    /**
+     * Changes the blank status in the database to String status.
+     * @param blankID
+     * @param blankType
+     * @param status
+     */
+
     public static void changeStatus(int blankID, int blankType, String status){
         try {
             String searchBlank = "UPDATE blanks SET status = " + "'" + status + "'" + " WHERE `blankID` = " + blankID
@@ -58,6 +75,11 @@ public class Blank {
         }
     }
 
+    /**
+     * Creates new blanks of x amount of the type provided
+     * @param amount
+     * @param type
+     */
     public static void orderBlanks(int amount, int type){
         try {
             Connection con = DBSConnection.getConnection();
@@ -86,6 +108,12 @@ public class Blank {
         }
     }
 
+    /**
+     * Used to get all relative information needed to create an object of Blank.
+     * @param blankID
+     * @param type
+     * @return
+     */
     public static Blank checkIfExists(int blankID, int type){
         try{
 
@@ -107,7 +135,15 @@ public class Blank {
         return null;
     }
 
-
+    /**
+     * Allocates received blanks to an employee, first by checking if there is enough of that blank type to allocate to
+     * and then getting the next highest blankID of that blankType, creating blank object and then updating the blanks
+     * status to 'Assigned' and inputting the assigned date into the database.
+     * @param type
+     * @param amount
+     * @param employeeIDBlank
+     * @param blankID
+     */
     public static void allocateBlank(int type, int amount, int employeeIDBlank, int blankID){
         try{
 
@@ -178,6 +214,12 @@ public class Blank {
         }
     }
 
+    /**
+     * Deletes the blank from the database
+     * @param blankID
+     * @param blankType
+     * @return
+     */
     public static boolean deleteBlank(int blankID , int blankType){
         try{
             String delete = "DELETE FROM `ats`.`blanks` WHERE `blankID` = '"+ blankID +"' AND `blankType` = "+ blankType;

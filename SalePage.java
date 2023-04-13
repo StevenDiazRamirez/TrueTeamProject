@@ -14,7 +14,6 @@ public class SalePage extends JFrame  {
     private JComboBox paymentType;
     private JComboBox flightType;
     private JButton confirmButton;
-    private JButton voidButton;
     private JTextField amount;
     private JButton backButton;
     private JTextField customerEmail;
@@ -87,33 +86,29 @@ public class SalePage extends JFrame  {
 
                System.out.println(allFieldsFilled);
 
+               //If all fields are filled only then can a sale be complete
                 if (allFieldsFilled) {
-
                     Blank.changeStatus(blankID, Integer.parseInt(blankType.getSelectedItem().toString()), "Sold");
 
+                    //If statement for each possible type of sale
                     if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("DOMESTIC")) {
-                        Sale.addNewCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                        Sale.addCashSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
                                 Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
                     }
                     if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
-                        Sale.addNewCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                        Sale.addCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
                                 Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, cardDetails.getText());
                     }
                     if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
-                        Sale.addNewCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                        Sale.addCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
                                 Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID);
                     }
                     if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
-                        Sale.addNewCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
+                        Sale.addCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
                                 Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID,
                                 cardDetails.getText());
                     }
                 } else JOptionPane.showMessageDialog(null, "Blank is not Valid");
-            }
-        });
-        voidButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
             }
         });
         backButton.addActionListener(new ActionListener() {
@@ -127,6 +122,9 @@ public class SalePage extends JFrame  {
         });
     }
 
+    /**
+     * Creates a pop-up window of coupons depending on the type of blank
+     */
     public void createValid() {
         int numFields = 0;
 
@@ -165,18 +163,18 @@ public class SalePage extends JFrame  {
                 coupon.setDestTo1(coupons.get(1).getText());
                 coupon.setDestFrom2(coupons.get(2).getText());
                 coupon.setDestTo2(coupons.get(3).getText());
-                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                coupon.setCouponID(Coupon.getLatestCouponID() + 1);
                 Coupon.addCoupons(coupon);
             } else if (blankType.getSelectedItem().equals(420) || blankType.getSelectedItem().equals(201)) {
                 Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
                 coupon.setDestFrom1(coupons.get(0).getText());
                 coupon.setDestTo1(coupons.get(1).getText());
-                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                coupon.setCouponID(Coupon.getLatestCouponID() + 1);
                 Coupon.addCoupons(coupon);
             } else if (blankType.getSelectedItem().equals(101)) {
                 Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
                 coupon.setDestTo1(coupons.get(0).getText());
-                coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
+                coupon.setCouponID(Coupon.getLatestCouponID() + 1);
                 Coupon.addCoupons(coupon);
             }
 
@@ -190,6 +188,9 @@ public class SalePage extends JFrame  {
         }
     }
 
+    /**
+     * Gets the discount of the customer inputted
+     */
     public void getCustomerDiscount() {
         if (Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
             String query = null;
@@ -212,6 +213,10 @@ public class SalePage extends JFrame  {
         } else JOptionPane.showMessageDialog(null, "no discount");
     }
 
+    /**
+     * Gets discount type of customer
+     * @return
+     */
     public String getDiscountType() {
         String type = "None";
         try {
@@ -230,6 +235,10 @@ public class SalePage extends JFrame  {
         return type;
     }
 
+    /**
+     * gets the discount id
+     * @return
+     */
     public int getDiscountID() {
         try {
             Connection con = DBSConnection.getConnection();
@@ -245,6 +254,9 @@ public class SalePage extends JFrame  {
         return -1;
     }
 
+    /**
+     * Creates a pop-up window allowing employee to enter a late pay date if the customer chooses to
+     */
     public void createLatePayPanel() {
         if (Sale.getCustomerType(customerEmail.getText()).equals("Regular") || Sale.getCustomerType(customerEmail.getText()).equals("Valued")) {
             panel = new JPanel();

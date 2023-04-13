@@ -21,6 +21,13 @@ public class Employee {
             this.role = role;
         }
 
+    /**
+     * Checks if username and password details given match that of those in the database, if it does then return true
+     * allowing employee to move onto the main page
+     * @param username
+     * @param password
+     * @return
+     */
         public static boolean login(String username, String password) {
             try {
                 Connection con = DBSConnection.getConnection();
@@ -37,11 +44,15 @@ public class Employee {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            //AlertWindow.showInformationAlert("Wrong details","Please make sure that the ID and the password are both correct!");
+            JOptionPane.showMessageDialog(null, "Wrong details, Please make sure that the ID and the password are both correct!");
             return false;
         }
 
-        public static int getLatestEmployeeID() {
+    /**
+     * Gets the highest employee ID in database
+     * @return
+     */
+    public static int getLatestEmployeeID() {
             try{
                 String query = "SELECT MAX(EmployeeID) from employeeaccount";
                 PreparedStatement stm = con.prepareStatement(query);
@@ -56,6 +67,11 @@ public class Employee {
             return  -1;
         }
 
+    /**
+     * Gets the employee ID of the selected one
+     * @param username
+     * @return
+     */
     public static int getThisEmployeeID(String username) {
         try{
             String query = "SELECT EmployeeID from employeeaccount WHERE Username = " + "'" + username + "'";
@@ -71,7 +87,11 @@ public class Employee {
         return  -1;
     }
 
-        public static void addEmployeeAccount(Employee employee) {
+    /**
+     * Adds an employee account to the database
+     * @param employee
+     */
+    public static void addEmployeeAccount(Employee employee) {
             try {
                 String query = "INSERT INTO employeeaccount (`EmployeeID`, `FirstName`, `LastName`, `Username`, `Password`," +
                         "`AccountType`) VALUES ('" + employee.getEmployeeID() + "', '" + employee.getFirstname() + "', '" +

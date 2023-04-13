@@ -26,6 +26,12 @@ public class Commission {
         this.blankType = blankType;
     }
 
+    /**
+     * Adds a commission to the database of x amount for a certain blank type with an expiry date
+     * @param amount
+     * @param blankType
+     * @param endDate
+     */
     public static void addCommission(float amount, int blankType, Date endDate) {
         try {
             Connection con = DBSConnection.getConnection();

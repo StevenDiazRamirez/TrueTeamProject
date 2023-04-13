@@ -77,6 +77,11 @@ public class DomesticReportPage extends JFrame {
         });
     }
 
+    /**
+     * gets the employee and the total amount: sales, amount, taxes, price
+     * @param startDate
+     * @param endDate
+     */
     private void getDocumentInformation(java.util.Date startDate, java.util.Date endDate) {
         try {
             java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
@@ -123,6 +128,11 @@ public class DomesticReportPage extends JFrame {
         }
     }
 
+    /**
+     * total cash amount and taxes per employee
+     * @param startDate
+     * @param endDate
+     */
     private void getCashInfo(java.util.Date startDate, java.util.Date endDate) {
         try {
             java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
@@ -166,6 +176,11 @@ public class DomesticReportPage extends JFrame {
         }
     }
 
+    /**
+     * total card amount and taxes
+     * @param startDate
+     * @param endDate
+     */
     private void getCardInfo(java.util.Date startDate, java.util.Date endDate) {
         try {
             java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
@@ -250,6 +265,11 @@ public class DomesticReportPage extends JFrame {
         }
     }
 
+    /**
+     * total commission amount with total sales per employee
+     * @param startDate
+     * @param endDate
+     */
     private void getCommissionInfo(java.util.Date startDate, java.util.Date endDate) {
         try {
             java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());

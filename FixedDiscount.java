@@ -16,6 +16,10 @@ public class FixedDiscount extends Discount{
         this.amount = amount;
     }
 
+    /**
+     * Adds a fixed discount to the database
+     * @param fixedDiscount
+     */
     public static void addFixedDiscount(FixedDiscount fixedDiscount) {
         try {
             String query = "INSERT INTO fixeddiscount (fixedID, `fixedDiscountID`, `amount`) VALUES " +
@@ -29,6 +33,10 @@ public class FixedDiscount extends Discount{
         }
     }
 
+    /**
+     * Gets the highest fixed discount ID from the database
+     * @return
+     */
     public static int getLatestFixedDiscountID() {
         try{
             String query = "SELECT MAX(fixedID) from fixeddiscount";

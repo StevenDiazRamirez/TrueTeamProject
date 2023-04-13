@@ -35,7 +35,9 @@ public class AddCommissionPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Checks if any of the fields are empty
                 if (!amountField.getText().isEmpty() || !String.valueOf(comboBox1.getSelectedItem()).isEmpty() || !endDateField.getText().isEmpty()) {
+                    //Not empty so gets the date and creates a commission
                     try {
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         endDate = dateFormat.parse(endDateField.getText());

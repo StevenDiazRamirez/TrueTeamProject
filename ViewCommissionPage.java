@@ -68,6 +68,9 @@ public class ViewCommissionPage extends JFrame {
         });
     }
 
+    /**
+     * Generates a table with commission info
+     */
     public void getCommissionInfo() {
         try {
 

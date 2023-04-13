@@ -45,6 +45,13 @@ public class LoginPage extends JFrame {
         });
     }
 
+    /**
+     * Creates an employee object of the logged in account, this employee object is linked to main page
+     * which allows for other functions to work
+     * @param username
+     * @param password
+     * @return
+     */
     public static Employee loggedInProfile(String username, String password) {
         try {
             Connection con = DBSConnection.getConnection();

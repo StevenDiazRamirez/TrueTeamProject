@@ -34,16 +34,20 @@ public class CustomerPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Checks if any of the fields are empty
                 if (firstName.getText().isEmpty() || lastName.getText().isEmpty() || email.getText().isEmpty() || String.valueOf(type.getSelectedItem()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
                 } else {
+                    //Fields are not empty and now cheks if customer is valued or not
                     if (!type.getSelectedItem().equals("Valued")) {
+                        //Customer is not valued so calls addCustomerAccount
                         Customer customer = new Customer(firstName.getText(), lastName.getText(),
                                 String.valueOf(type.getSelectedItem()), email.getText());
                         customer.setCustomerID(Customer.getLatestCustomerID() + 1);
                         Customer.addCustomerAccount(customer);
                     } else {
+                        //customer is valued so adds a discount and valued account to database
                         Discount discount = new Discount(discountType.getSelectedItem().toString());
                         discount.setDiscountID(Discount.getLatestDiscountID() + 1);
                         Customer customer = new Customer(firstName.getText(), lastName.getText(),
@@ -52,11 +56,13 @@ public class CustomerPage extends JFrame {
                         Customer.addCustomerAccountValued(customer);
                         Discount.addDiscount(discount);
                         if (discountType.getSelectedItem().equals("Fixed")) {
+                            //Adds a fixed discount
                             FixedDiscount fixedDiscount = new FixedDiscount(discount.getDiscountID(), Float.parseFloat(discountAmount.getText()));
                             fixedDiscount.setFixedID(FixedDiscount.getLatestFixedDiscountID() + 1);
                             FixedDiscount.addFixedDiscount(fixedDiscount);
                         }
                         if (discountType.getSelectedItem().equals("Flexible")) {
+                            //Adds a flexible discount
                             FlexibleDiscount flexibleDiscount = new FlexibleDiscount(0, 15, Float.parseFloat(discountAmount.getText()), discount.getDiscountID());
                             flexibleDiscount.setFlexibleID(FlexibleDiscount.getLatestFlexibleDiscountID() + 1);
                             FlexibleDiscount.addFlexibleDiscount(flexibleDiscount);
@@ -65,9 +71,13 @@ public class CustomerPage extends JFrame {
                 }
             }
         });
+        /**
+         * Updates customer account type
+         */
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Checks if fields are empty
                 if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;
@@ -79,9 +89,13 @@ public class CustomerPage extends JFrame {
                 JOptionPane.showMessageDialog(null, "Updated");
             }
         });
+        /**
+         * Deletes Customer from database
+         */
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Checks if fields are empty
                 if(firstName.getText().isEmpty()||lastName.getText().isEmpty()||email.getText().isEmpty()||String.valueOf(type.getSelectedItem()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Missing fields, Please fill out all the required fields");
                     return;

@@ -71,6 +71,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     ex.printStackTrace();
                 }
                 if (MainPage.getProfile().getRole().equals("Manager")) {
+                    //creates report on employee id selected
                     getDocumentInformation(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getCashInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getCardInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
@@ -78,6 +79,7 @@ public class IndividualDomesticReportPage extends JFrame {
                     getCommissionInfo(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                     getTotalCommission(Integer.parseInt(employeeIDBox.getSelectedItem().toString()), startDate, endDate);
                 } else if (MainPage.getProfile().getRole().equals("Travel Advisor")) {
+                    //creates report on the employee logged in
                     getDocumentInformation(MainPage.getProfile().getEmployeeID(), startDate, endDate);
                     getCashInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);
                     getCardInfo(MainPage.getProfile().getEmployeeID(), startDate, endDate);

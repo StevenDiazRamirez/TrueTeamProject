@@ -65,6 +65,9 @@ public class ListEmployeePage extends JFrame {
         });
     }
 
+    /**
+     * Generates a table containing a list of employees
+     */
     public void getListOfEmployees() {
         try {
 

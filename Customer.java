@@ -13,6 +13,7 @@ public class Customer {
     private String email;
     private int discountID;
 
+    // For a new or regular Customer
     public Customer(String firstName, String lastName, String type, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,6 +21,7 @@ public class Customer {
         this.email = email;
     }
 
+    // For a Valued Customer who has a discount
     public Customer(String firstName, String lastName, String type, String email, int discountID) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +30,10 @@ public class Customer {
         this.discountID = discountID;
     }
 
+    /**
+     *  Adds a new or regular customer account to database
+     * @param customer
+     */
     public static void addCustomerAccount(Customer customer) {
         try {
             String query = "INSERT INTO customeraccount (`CustomerID`,`FirstName`, `LastName`, `AccountType`, `CustomerEmail`) VALUES " +
@@ -42,6 +48,10 @@ public class Customer {
         }
     }
 
+    /**
+     * Adds a valued customer account to database
+     * @param customer
+     */
     public static void addCustomerAccountValued(Customer customer) {
         try {
             String query = "INSERT INTO customeraccount (`CustomerID`,`FirstName`, `LastName`, `AccountType`, `CustomerEmail`, `DiscountIDCustomer`) " +
@@ -57,6 +67,10 @@ public class Customer {
         }
     }
 
+    /**
+     * changes the account type of the customers account
+     * @param customer
+     */
     public static void updateCustomerAccount(Customer customer) {
         try {
             String query = "UPDATE customeraccount SET AccountType = " + "'" + customer.getType() + "'" + " WHERE CustomerID = "
@@ -70,6 +84,10 @@ public class Customer {
         }
     }
 
+    /**
+     * deletes the customer account from the database
+     * @param customer
+     */
     public static void deleteCustomerAccount(Customer customer) {
         try{
             String statement = "DELETE FROM customeraccount WHERE CustomerID = "+ customer.getCustomerID();
@@ -81,6 +99,10 @@ public class Customer {
         }
     }
 
+    /**
+     * Gets the highest customer ID
+     * @return
+     */
     public static int getLatestCustomerID() {
         try{
             String query = "SELECT MAX(CustomerID) from customeraccount";
@@ -96,6 +118,11 @@ public class Customer {
         return -1;
     }
 
+    /**
+     * Gets the customer ID of the selected customer
+     * @param customer
+     * @return
+     */
     public static int getThisCustomerID(Customer customer) {
         try {
             String query = "SELECT CustomerID from customeraccount WHERE CustomerEmail = " + "'" + customer.getEmail() + "'";

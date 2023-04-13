@@ -15,6 +15,10 @@ public class Discount {
         this.type = type;
     }
 
+    /**
+     * gets the highest discount iD from the database
+     * @return
+     */
     public static int getLatestDiscountID() {
         try{
             String query = "SELECT MAX(DiscountID) from discount";
@@ -30,6 +34,10 @@ public class Discount {
         return -1;
     }
 
+    /**
+     *  Adds discount to the database
+     * @param discount
+     */
     public static void addDiscount(Discount discount) {
         try {
             String query = "INSERT INTO discount (`DiscountID`, `DiscountType`) VALUES " +

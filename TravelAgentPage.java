@@ -50,6 +50,9 @@ public class TravelAgentPage extends JFrame {
         });
     }
 
+    /**
+     * Generates a table with all the travel agent info
+     */
     private void getTravelAgentInfo() {
         try {
             Connection con = DBSConnection.getConnection();

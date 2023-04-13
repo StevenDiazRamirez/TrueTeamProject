@@ -137,6 +137,11 @@ public class MainPage extends JFrame {
         return profile;
     }
 
+    /**
+     * Gets and late payment dates from sale table and compares to today's date if todayDate > latePayDate then a
+     * pop-up window is created to alert the employee logged in of customer who is overdue for a late payment
+     * @return
+     */
     public boolean checkLatePayments() {
         try {
             Connection con = DBSConnection.getConnection();

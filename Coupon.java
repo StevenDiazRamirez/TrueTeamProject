@@ -23,6 +23,10 @@ public class Coupon {
         this.blankIDCoupons = blankIDCoupons;
     }
 
+    /**
+     * Adds coupon to database
+     * @param coupon
+     */
     public static void addCoupons(Coupon coupon) {
         try {
             String query = "INSERT INTO coupons (`couponID`,`couponType`,`blankType`,`destFrom1`," +
@@ -38,7 +42,11 @@ public class Coupon {
         }
     }
 
-    public static int getLatestCustomerID() {
+    /**
+     * Gets highest CouponID
+     * @return
+     */
+    public static int getLatestCouponID() {
         try{
             String query = "SELECT MAX(couponID) from coupons";
             PreparedStatement stm = con.prepareStatement(query);

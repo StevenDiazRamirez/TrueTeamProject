@@ -66,6 +66,9 @@ public class ViewBlanksPage extends JFrame {
                 employeeField.setText(model.getValueAt(selectedRow,5).toString());
             }
         });
+        /**
+         * Report if a blank has been lost or stolen
+         */
         reportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,6 +79,9 @@ public class ViewBlanksPage extends JFrame {
                 JOptionPane.showMessageDialog(null, "Blank has been reported");
             }
         });
+        /**
+         * Deletes the blank from the database as blank selected is returned to the Agent
+         */
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,6 +129,9 @@ public class ViewBlanksPage extends JFrame {
         });
     }
 
+    /**
+     * Generates a table with blank info of employee logged in
+     */
     private void getBlankInfoSingle() {
         try {
             Connection con = DBSConnection.getConnection();
@@ -159,6 +168,9 @@ public class ViewBlanksPage extends JFrame {
         }
     }
 
+    /**
+     * Generates a table with blank info of all employees
+     */
     private void getBlankInfoAll() {
         try {
             Connection con = DBSConnection.getConnection();

@@ -46,7 +46,18 @@ public class Sale {
         this.cardNumber = cardNumber;
     }
 
-    public static void addNewCashSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
+    /**
+     * Adds a Domestic Cash sale to database
+     * @param blankType
+     * @param amount
+     * @param taxes
+     * @param latePaymentDate
+     * @param blankID
+     * @param employeeID
+     * @param customerID
+     * @param commissionID
+     */
+    public static void addCashSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -62,7 +73,9 @@ public class Sale {
 
             java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
 
+            //Checks if customer is new or regular/valued
             if (!(latePaymentDate == null)) {
+                //For regular or valued customer
                 java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
                 String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
@@ -70,6 +83,7 @@ public class Sale {
                         "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "');";
                 highestSaleID.executeUpdate(addQuery);
             } else {
+                //For new/guest customers
                 String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CASH" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
@@ -82,7 +96,19 @@ public class Sale {
         }
     }
 
-    public static void addNewCardSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
+    /**
+     * Adds a Domestic Card sale to database
+     * @param blankType
+     * @param amount
+     * @param taxes
+     * @param latePaymentDate
+     * @param blankID
+     * @param employeeID
+     * @param customerID
+     * @param commissionID
+     * @param cardDetails
+     */
+    public static void addCardSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -98,7 +124,9 @@ public class Sale {
 
             java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
 
+            //Checks if customer is new or regular/valued
             if (!(latePaymentDate == null)) {
+                //For regular or valued customer
                 java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
                 String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
@@ -107,6 +135,7 @@ public class Sale {
 
                 highestSaleID.executeUpdate(addQuery);
             } else {
+                //For new/guest customers
                 String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CARD" + "', '" + "Domestic" + "', '" + amount + "', '" + todayDate +
@@ -120,7 +149,19 @@ public class Sale {
         }
     }
 
-    public static void addNewCashSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
+    /**
+     * Add Global Cash sale to database
+     * @param blankType
+     * @param amount
+     * @param exchangeRate
+     * @param taxes
+     * @param latePaymentDate
+     * @param blankID
+     * @param employeeID
+     * @param customerID
+     * @param commissionID
+     */
+    public static void addCashSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -136,7 +177,9 @@ public class Sale {
 
             java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
 
+            //checks if customer is new or regular/valued
             if (!(latePaymentDate == null)) {
+                //For regular or valued customer
                 java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
                 String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
@@ -145,6 +188,7 @@ public class Sale {
 
                 highestSaleID.executeUpdate(addQuery);
             } else {
+                //For new/guest customer
                 String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CASH" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
@@ -158,7 +202,20 @@ public class Sale {
         }
     }
 
-    public static void addNewCardSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
+    /**
+     * Adds Global Card sale to database
+     * @param blankType
+     * @param amount
+     * @param exchangeRate
+     * @param taxes
+     * @param latePaymentDate
+     * @param blankID
+     * @param employeeID
+     * @param customerID
+     * @param commissionID
+     * @param cardDetails
+     */
+    public static void addCardSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -174,7 +231,9 @@ public class Sale {
 
             java.sql.Date todayDate = new java.sql.Date(new Date().getTime());
 
+            //checks if customer is new or regular/valued
             if (!(latePaymentDate == null)) {
+                //For regular or valued customer
                 java.sql.Date lateDate = new java.sql.Date(latePaymentDate.getTime());
                 String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
@@ -183,6 +242,7 @@ public class Sale {
 
                 highestSaleID.executeUpdate(addQuery);
             } else {
+                //For new/guest customer
                 String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CARD" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
@@ -196,6 +256,11 @@ public class Sale {
         }
     }
 
+    /**
+     * Adds a late pay status to an existing sale
+     * @param latePaymentStatus
+     * @param saleID
+     */
     public static void addLatePayStatus(String latePaymentStatus, int saleID) {
         try {
             Connection con = DBSConnection.getConnection();
@@ -211,7 +276,12 @@ public class Sale {
         }
     }
 
-        public static String getCustomerType(String customerEmail) {
+    /**
+     * Gets the type of customer
+     * @param customerEmail
+     * @return
+     */
+    public static String getCustomerType(String customerEmail) {
         try {
             Connection con = DBSConnection.getConnection();
 

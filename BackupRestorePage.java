@@ -41,6 +41,7 @@ public class BackupRestorePage extends JFrame {
         browseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Opens up file explorer to choose file location for backup
                 start = System.getProperty("user.dir");
                 JFileChooser path = new JFileChooser(start);
                 path.showOpenDialog(BackupRestorePage.this);
@@ -60,6 +61,7 @@ public class BackupRestorePage extends JFrame {
         backupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //creates a backup .sql file of teh database
                 Process p = null;
                 try {
                     Runtime runtime = Runtime.getRuntime();
@@ -78,6 +80,7 @@ public class BackupRestorePage extends JFrame {
         browseButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Opens up file explorer to choose file location for restore
                 start = System.getProperty("user.dir");
                 JFileChooser path = new JFileChooser(start);
                 path.showOpenDialog(BackupRestorePage.this);
@@ -96,6 +99,7 @@ public class BackupRestorePage extends JFrame {
         restoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //call mysql.exe on the .sql to restore database
                 String[] restoreCmd = new String[]{"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe","-uroot","-e","source " + filename2};
                 Process process;
                 try {

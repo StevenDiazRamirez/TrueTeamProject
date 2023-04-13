@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -28,8 +27,11 @@ public class ManageSalePage extends JFrame {
         refundFrame.setLocationRelativeTo(null);
         refundFrame.setVisible(true);
 
-        getRefundInfo();
+        getSaleInfo();
 
+        /**
+         * If sale created has a mistake then it is voided
+         */
         voidButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,6 +51,9 @@ public class ManageSalePage extends JFrame {
 
             }
         });
+        /**
+         * Update the late pay status of a sale with a late payment
+         */
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,6 +65,9 @@ public class ManageSalePage extends JFrame {
                 }
             }
         });
+        /**
+         * Refunds a sale
+         */
         refundButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +97,10 @@ public class ManageSalePage extends JFrame {
         });
     }
 
-    public void getRefundInfo() {
+    /**
+     * Generates a table of sales with all relevant information
+     */
+    public void getSaleInfo() {
         try {
             Connection con = DBSConnection.getConnection();
 

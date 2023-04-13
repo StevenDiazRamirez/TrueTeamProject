@@ -34,11 +34,13 @@ public class AddEmployeePage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Checks if any of the fields are empty
                 if (firstName.getText().isEmpty() || lastName.getText().isEmpty() || username.getText().isEmpty()
                 || password.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null,"Missing fields, Please fill out all the required fields" );
                     return;
                 }
+                //Not empty so creates an employee abject and calls addEmployeeAccount
                 Employee employee = new Employee(firstName.getText(), lastName.getText(), username.getText(),
                         password.getText(), String.valueOf(comboBox1.getSelectedItem()));
                 employee.setEmployeeID(Employee.getLatestEmployeeID() + 1);
