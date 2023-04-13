@@ -96,7 +96,7 @@ public class ManageSalePage extends JFrame {
 
             Statement stm = con.createStatement();
             String query = "SELECT saleID, blankTypeSale, PaymentType, PaymentAmount, saleDate, latePaymentDate, latePaymentStatus," +
-                    " cardDetails, b.blankID FROM sale s, blanks b WHERE s.blankIDSale = b.blankID AND b.status = 'Sold'";
+                    " cardDetails, b.blankID FROM sale s, blanks b WHERE s.blankIDSale = b.blankID AND s.blankTypeSale = b.blankType AND b.status = 'Sold'";
             ResultSet rs = stm.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();
             DefaultTableModel model = (DefaultTableModel) refundTable.getModel();

@@ -125,7 +125,7 @@ public class ViewBlanksPage extends JFrame {
             Connection con = DBSConnection.getConnection();
 
             Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM blanks WHERE employeeID =" + MainPage.getProfile().getEmployeeID());
+            ResultSet rs = stm.executeQuery("SELECT * FROM blanks WHERE employeeIDBlank =" + MainPage.getProfile().getEmployeeID());
             ResultSetMetaData rsmd = rs.getMetaData();
             DefaultTableModel model = (DefaultTableModel) blankTable.getModel();
 
@@ -139,7 +139,7 @@ public class ViewBlanksPage extends JFrame {
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel> (model);
             blankTable.setRowSorter(sorter);
 
-            String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
+            String blankID, blankType, status, dateReceived, dateAssigned, employeeIDBlank;
 
             while (rs.next()) {
                 blankID = rs.getString(1);
@@ -147,8 +147,8 @@ public class ViewBlanksPage extends JFrame {
                 status = rs.getString(3);
                 dateReceived = rs.getString(4);
                 dateAssigned = rs.getString(5);
-                employeeID = rs.getString(6);
-                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
+                employeeIDBlank = rs.getString(6);
+                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeIDBlank};
                 model.addRow(row);
             }
         } catch (SQLException e) {
@@ -175,7 +175,7 @@ public class ViewBlanksPage extends JFrame {
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel> (model);
             blankTable.setRowSorter(sorter);
 
-            String blankID, blankType, status, dateReceived, dateAssigned, employeeID;
+            String blankID, blankType, status, dateReceived, dateAssigned, employeeIDBlank;
 
             while (rs.next()) {
                 blankID = rs.getString(1);
@@ -183,8 +183,8 @@ public class ViewBlanksPage extends JFrame {
                 status = rs.getString(3);
                 dateReceived = rs.getString(4);
                 dateAssigned = rs.getString(5);
-                employeeID = rs.getString(6);
-                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeID};
+                employeeIDBlank = rs.getString(6);
+                String[] row = {blankID, blankType, status, dateReceived, dateAssigned, employeeIDBlank};
                 model.addRow(row);
             }
 

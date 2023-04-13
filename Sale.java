@@ -82,7 +82,7 @@ public class Sale {
         }
     }
 
-    public static void addNewCardSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, int cardDetails) {
+    public static void addNewCardSaleDomestic(int blankType, float amount, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -158,7 +158,7 @@ public class Sale {
         }
     }
 
-    public static void addNewCardSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, int cardDetails) {
+    public static void addNewCardSaleGlobal(int blankType, float amount, float exchangeRate, float taxes, Date latePaymentDate, int blankID, int employeeID, int customerID, int commissionID, String cardDetails) {
         try {
             Connection con = DBSConnection.getConnection();
 
@@ -179,14 +179,14 @@ public class Sale {
                 String addQuery = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `latePaymentDate`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CARD" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
-                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+                        "', '" + taxes + "', '" + lateDate + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" +  cardDetails + "');";
 
                 highestSaleID.executeUpdate(addQuery);
             } else {
                 String addQuery2 = "INSERT INTO sale (`SaleID`, `blankTypeSale`, `PaymentType`, `flightType`, `PaymentAmount`, " +
                         "`exchangeRate`, `saleDate`, `taxes`, `blankIDSale`, `employeeIDSale`, `customerIDSale`, `commissionIDSale`, `cardDetails`) VALUES ('" + highestSale +
                         "', '" + blankType + "', '" + "CARD" + "', '" + "Global" + "', '" + amount + "', '" + exchangeRate + "', '" + todayDate +
-                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '" + cardDetails + "');";
+                        "', '" + taxes + "', '" + blankID + "', '" + employeeID + "', '" + customerID + "', '" + commissionID + "', '"  + cardDetails + "');";
 
                 highestSaleID.executeUpdate(addQuery2);
             }

@@ -95,7 +95,7 @@ public class Blank {
 
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
-                Blank blank = new Blank(rs.getInt("blankType"),rs.getString("status"),rs.getDate("dateRecieved"),rs.getDate("dateAssigned"),rs.getInt("employeeID"));
+                Blank blank = new Blank(rs.getInt("blankType"),rs.getString("status"),rs.getDate("dateRecieved"),rs.getDate("dateAssigned"),rs.getInt("employeeIDBlank"));
                 blank.setBlankID(rs.getInt(1));
                 return blank;
             }
@@ -108,7 +108,7 @@ public class Blank {
     }
 
 
-    public static void allocateBlank(int type, int amount, int employeeID, int blankID){
+    public static void allocateBlank(int type, int amount, int employeeIDBlank, int blankID){
         try{
 
             boolean enoughBlanks = false;
@@ -144,7 +144,7 @@ public class Blank {
                     for (int i = 0; i < amount; i++) {
                         Blank blank = checkIfExists(highestBlank+i, type);
                         if(blank.getStatus().equals("Received")) {
-                            String addStatement = "UPDATE blanks SET status = 'Assigned', dateAssigned = " + '"' + sqlDate + '"' + ", employeeID = " + '"' + employeeID + '"' + " WHERE blankID = " + (highestBlank + i) + " AND blankType = "+type;
+                            String addStatement = "UPDATE blanks SET status = 'Assigned', dateAssigned = " + '"' + sqlDate + '"' + ", employeeIDBlank = " + '"' + employeeIDBlank + '"' + " WHERE blankID = " + (highestBlank + i) + " AND blankType = "+type;
                             stm.executeUpdate(addStatement);
                         }else{
                             amount++;
@@ -160,7 +160,7 @@ public class Blank {
                         for(int i =0; i<amount; i++){
                             Blank blank2 = checkIfExists(highestBlank+i,type);
                             if(blank.getStatus().equals("Received")) {
-                                String addStatement = "UPDATE blanks SET status = 'Assigned', dateAssigned = " + '"' + sqlDate + '"' + ", employeeID = " + '"' + employeeID + '"' + " WHERE blankID = " + (highestBlank + i)  + " AND blankType = "+type;;
+                                String addStatement = "UPDATE blanks SET status = 'Assigned', dateAssigned = " + '"' + sqlDate + '"' + ", employeeIDBlank = " + '"' + employeeIDBlank + '"' + " WHERE blankID = " + (highestBlank + i)  + " AND blankType = "+type;;
                                 stm.executeUpdate(addStatement);
                             }else{
                                 amount++;

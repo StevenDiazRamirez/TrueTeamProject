@@ -97,7 +97,7 @@ public class SalePage extends JFrame  {
                     }
                     if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("DOMESTIC")) {
                         Sale.addNewCardSaleDomestic(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
-                                Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, Integer.parseInt(cardDetails.getText()));
+                                Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID, cardDetails.getText());
                     }
                     if (paymentType.getSelectedItem().equals("CASH") && flightType.getSelectedItem().equals("GLOBAL")) {
                         Sale.addNewCashSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
@@ -106,7 +106,7 @@ public class SalePage extends JFrame  {
                     if (paymentType.getSelectedItem().equals("CARD") && flightType.getSelectedItem().equals("GLOBAL")) {
                         Sale.addNewCardSaleGlobal(Integer.parseInt(blankType.getSelectedItem().toString()), Float.parseFloat(amount.getText()),
                                 Float.parseFloat(exchangeRate.getText()), Float.parseFloat(taxes.getText()), lateDate, blankID, employeeID, customerID, commissionID,
-                                Integer.parseInt(cardDetails.getText()));
+                                cardDetails.getText());
                     }
                 } else JOptionPane.showMessageDialog(null, "Blank is not Valid");
             }
@@ -173,7 +173,6 @@ public class SalePage extends JFrame  {
                 coupon.setDestTo1(coupons.get(1).getText());
                 coupon.setCouponID(Coupon.getLatestCustomerID() + 1);
                 Coupon.addCoupons(coupon);
-
             } else if (blankType.getSelectedItem().equals(101)) {
                 Coupon coupon = new Coupon("Flight", Integer.parseInt(blankType.getSelectedItem().toString()), getSelectedBlankID());
                 coupon.setDestTo1(coupons.get(0).getText());
@@ -210,7 +209,7 @@ public class SalePage extends JFrame  {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        } else JOptionPane.showMessageDialog(null, "no discount");
     }
 
     public String getDiscountType() {
@@ -268,7 +267,7 @@ public class SalePage extends JFrame  {
         try {
             Connection con = DBSConnection.getConnection();
             Statement stm = con.createStatement();
-            String query = "SELECT blankType FROM ats.blanks WHERE employeeID = " + MainPage.getProfile().getEmployeeID() +
+            String query = "SELECT blankType FROM ats.blanks WHERE employeeIDBlank = " + MainPage.getProfile().getEmployeeID() +
                     " AND status = 'Assigned'";
             ResultSet rs = stm.executeQuery(query);
 
@@ -318,7 +317,7 @@ public class SalePage extends JFrame  {
         try {
             Connection con = DBSConnection.getConnection();
             Statement stm = con.createStatement();
-            String query = "SELECT MIN(blankID) FROM ats.blanks WHERE employeeID = " + MainPage.getProfile().getEmployeeID() +
+            String query = "SELECT MIN(blankID) FROM ats.blanks WHERE employeeIDBlank = " + MainPage.getProfile().getEmployeeID() +
                     " AND blankType = " + blankType.getSelectedItem() + " AND status = 'Assigned'";
             ResultSet rs = stm.executeQuery(query);
 

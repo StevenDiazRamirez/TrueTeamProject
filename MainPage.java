@@ -120,6 +120,7 @@ public class MainPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ManageSalePage manageSalePage = new ManageSalePage();
                 manageSalePage.setVisible(false);
+                mainFrame.dispose();
             }
         });
         logoutButton.addActionListener(new ActionListener() {

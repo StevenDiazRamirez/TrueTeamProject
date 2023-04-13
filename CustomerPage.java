@@ -62,7 +62,6 @@ public class CustomerPage extends JFrame {
                             FlexibleDiscount.addFlexibleDiscount(flexibleDiscount);
                         }
                     }
-                    JOptionPane.showMessageDialog(null, "Added!");
                 }
             }
         });
